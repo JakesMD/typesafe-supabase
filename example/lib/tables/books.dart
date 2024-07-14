@@ -9,7 +9,7 @@ class Books extends SupaTable<BooksColumn<dynamic>, BooksColumnValue<dynamic>> {
   static final id = BooksColumn<BigInt>._(
     name: 'id',
     hasDefault: true,
-    valueFromJSON: (v) => BigInt.parse(v as String),
+    valueFromJSON: (v) => BigInt.from(v as int),
     valueToJSON: (v) => v.toString(),
   );
 
