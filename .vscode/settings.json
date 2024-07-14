@@ -1,0 +1,21 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "files.exclude": {
+        "coverage_badge.svg": true,
+        "LICENSE": true,
+        "**/.branches": true,
+        "**/.dart_tool/": true,
+        "**/.idea/": true,
+        "**/.metadata": true,
+        "**/.temp": true,
+        "**/*.iml": true,
+        "**/coverage": true,
+        "**/build": true,
+        "**/pubspec.lock": true,
+        "**/analysis_options.yaml": true,
+        "**/.gitignore": true,
+    },
+    "testing.automaticallyOpenPeekView": "never"
+}
