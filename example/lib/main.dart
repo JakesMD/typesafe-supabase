@@ -31,8 +31,7 @@ void main() async {
   // Insert a new Paddington book.
   await books.insert(
     records: [
-      BooksInsert(
-        id: BigInt.from(2390),
+      const BooksInsert(
         title: 'All About Paddington',
         author: 'Bond',
         pages: 160,
@@ -47,12 +46,12 @@ void main() async {
         .notEquals(Books.author('Michael Bond')),
   );
 
-  // Update the title and author of the book with the ID 2390.
+  // Update the title and author of the book with the ID 4.
   await books.update(
     values: {
       Books.title('Paddington Here and Now'),
       Books.author('Michael Bond'),
     },
-    filter: books.equals(Books.id(BigInt.from(2390))),
+    filter: books.equals(Books.id(BigInt.from(4))),
   );
 }

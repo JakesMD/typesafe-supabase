@@ -57,10 +57,9 @@ final title = paddingtonBook(Books.title);
 await books.insert(
   records: [
     BooksInsert(
-    id: BigInt.from(4),
-    title: 'All About Paddington',
-    author: 'Bond',
-    pages: 160,
+      title: 'All About Paddington',
+      author: 'Bond',
+      pages: 160,
     ),
   ],
 );
@@ -72,7 +71,7 @@ await books.delete(
     .notEquals(Books.author('Michael Bond')),
 );
 
-// Update the title and author of the book with the ID 2390.
+// Update the title and author of the book with the ID 4.
 await books.update(
   values: {
     Books.title('Paddington Here and Now'),

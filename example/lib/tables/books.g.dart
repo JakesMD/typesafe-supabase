@@ -31,7 +31,7 @@ class BooksRecord extends SupaRecord<BooksColumn, BooksColumnValue> {
 
 class BooksInsert extends SupaInsert<Books, BooksColumn, BooksColumnValue> {
   const BooksInsert({
-    required this.id,
+    this.id,
     required this.title,
     required this.author,
     required this.pages,
