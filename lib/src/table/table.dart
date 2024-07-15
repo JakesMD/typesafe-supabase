@@ -12,10 +12,11 @@ export 'value.dart';
 /// Represents a table in the Supabase database.
 ///
 /// {@endtemplate}
-class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>>
-    with SupaFilterMixin<V> {
+class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>,
+    R extends SupaRecord<C, V>> with SupaFilterMixin<V> {
   /// {@macro SupaTable}
-  const SupaTable({
+  const SupaTable(
+    this.recordFromJSON, {
     required this.tableName,
     required this.primaryKey,
     required this.supabaseClient,
@@ -30,12 +31,15 @@ class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>>
   /// The client instance used to interact with supabase.
   final SupabaseClient supabaseClient;
 
+  /// Converts a JSON map to a record.
+  final R Function(Map<String, dynamic> json) recordFromJSON;
+
   /// Fetches records from the Supabase table.
   ///
   /// [columns] is the set of columns to fetch. If null, all columns are
   /// fetched.
   /// [filter] is the filter to apply to the query.
-  Future<List<R>> fetch<R extends SupaRecord<C, V>>({
+  Future<List<R>> fetch({
     required SupaFilter<V> filter,
     Set<C>? columns,
   }) async {
@@ -44,18 +48,18 @@ class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>>
         .select(columns?.map((c) => c.name).join(', ') ?? '*')
         .supaApply(filter);
 
-    return response.map((json) => SupaRecord<C, V>(json) as R).toList();
+    return response.map(recordFromJSON).toList();
   }
 
   /// Inserts records into the Supabase table.
   ///
   /// [records] is the list of records to insert.
-  Future<void> insert<T extends SupaTable<C, V>>({
-    required List<SupaInsert<T, C, V>> records,
+  Future<void> insert<T extends SupaTable<C, V, R>>({
+    required List<SupaInsert<V>> records,
   }) =>
       supabaseClient
           .from(tableName)
-          .insert(records.map((r) => r.toJSON(this as T)).toList());
+          .insert(records.map((r) => r.toJSON()).toList());
 
   /// Updates records in the Supabase table.
   ///

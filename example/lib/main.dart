@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable
-
 import 'dart:io';
 
 import 'package:supabase/supabase.dart';
@@ -22,11 +20,8 @@ void main() async {
   );
   print(records.length);
 
-  // The first book.
-  final paddingtonBook = records.first;
-
   // The title of the first book.
-  final title = paddingtonBook(Books.title);
+  final title = records.first.title;
   print(title);
 
   // Insert a new Paddington book.

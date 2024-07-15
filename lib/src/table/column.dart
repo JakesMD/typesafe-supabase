@@ -12,16 +12,10 @@ class SupaColumn<T, V extends SupaValue<T>> {
     required this.name,
     required this.valueToJSON,
     required this.valueFromJSON,
-    this.hasDefault = false,
   });
 
   /// The name of the column.
   final String name;
-
-  /// Whether the column has a default value which is set by the database.
-  ///
-  /// This is often the case for columns like 'id', 'created_at', ...
-  final bool hasDefault;
 
   /// The function to convert the value to the correct type for the JSON.
   ///
