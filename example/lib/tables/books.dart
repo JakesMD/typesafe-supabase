@@ -17,5 +17,5 @@ class Books extends SupaTable<BooksColumn<dynamic>, BooksColumnValue<dynamic>> {
 
   static const author = BooksColumn<String>._(name: 'author');
 
-  static const pages = BooksColumn<int>._(name: 'pages');
+  static const pages = BooksColumn<int?>._(name: 'pages');
 }

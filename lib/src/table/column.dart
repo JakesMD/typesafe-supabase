@@ -46,9 +46,9 @@ class SupaColumn<T, V extends SupaValue<T>> {
   ///
   /// Throws an exception if the column is not found in the JSON.
   T fromJSON(Map<String, dynamic> json) {
-    final value = json[name];
-    if (value == null) throw Exception('Column $name not found in JSON.');
-
-    return valueFromJSON?.call(value) ?? value as T;
+    if (!json.containsKey(name)) {
+      throw Exception('Column $name not found in JSON.');
+    }
+    return valueFromJSON?.call(json[name]) ?? json[name] as T;
   }
 }

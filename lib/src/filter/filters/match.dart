@@ -19,6 +19,6 @@ class SupaMatchFilter<V extends SupaValue<dynamic>> extends SupaFilter<V> {
       (prev, column) => {...prev, column.name: column.value},
     );
 
-    return builder.match(matcher.cast());
+    return builder.match(matcher as Map<String, Object>);
   }
 }

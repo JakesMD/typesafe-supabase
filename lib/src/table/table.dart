@@ -41,7 +41,7 @@ class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>>
   }) async {
     final response = await supabaseClient
         .from(tableName)
-        .select(columns?.join(', ') ?? '*')
+        .select(columns?.map((c) => c.name).join(', ') ?? '*')
         .supaApply(filter);
 
     return response.map((json) => SupaRecord<C, V>(json) as R).toList();

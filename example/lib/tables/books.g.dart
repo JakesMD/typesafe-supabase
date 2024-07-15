@@ -40,7 +40,7 @@ class BooksInsert extends SupaInsert<Books, BooksColumn, BooksColumnValue> {
   final BigInt? id;
   final String title;
   final String author;
-  final int pages;
+  final int? pages;
 
   @override
   Set<BooksColumnValue> values(Books table) => {

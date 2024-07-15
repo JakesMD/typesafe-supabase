@@ -24,7 +24,7 @@ class Books extends SupaTable<BooksColumn<dynamic>, BooksColumnValue<dynamic>> {
 
   static const author = BooksColumn<String>._(name: 'author');
 
-  static const pages = BooksColumn<int>._(name: 'pages');
+  static const pages = BooksColumn<int?>._(name: 'pages');
 }
 ```
 
@@ -40,35 +40,27 @@ final books = Books(supabaseClient: supabaseClient);
 
 // Fetch all Paddington books.
 final records = await books.fetch(
-  columns: {
-    Books.id,
-    Books.title,
-  },
-  filter: books.contains(Books.title('Paddington')),
+  columns: {Books.id, Books.title},
+  filter: books.textSearch(Books.title('Paddington')),
 );
+print(records.length);
 
-// The first book.
+// The first Paddington book.
 final paddingtonBook = records.first;
 
-// The title of the first book.
+// The title of the first Paddington book.
 final title = paddingtonBook(Books.title);
+print(title);
 
 // Insert a new Paddington book.
 await books.insert(
   records: [
-    BooksInsert(
+    const BooksInsert(
       title: 'All About Paddington',
       author: 'Bond',
       pages: 160,
     ),
   ],
-);
-
-// Delete all Paddington books that were not written by Michael Bond.
-await books.delete(
-  filter: books
-    .contains(Books.title('Paddington'))
-    .notEquals(Books.author('Michael Bond')),
 );
 
 // Update the title and author of the book with the ID 4.
@@ -78,5 +70,12 @@ await books.update(
     Books.author('Michael Bond'),
   },
   filter: books.equals(Books.id(BigInt.from(4))),
+);
+
+// Delete all Paddington books that were not written by Michael Bond.
+await books.delete(
+  filter: books
+      .textSearch(Books.title('Paddington'))
+      .notEquals(Books.author('Michael Bond')),
 );
 ```
