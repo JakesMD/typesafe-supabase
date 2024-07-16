@@ -11,26 +11,26 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 part 'books.g.dart';
 
 @SupaTableHere()
-class Books extends SupaTable<BooksColumn<dynamic>, BooksColumnValue<dynamic>,
-    BooksRecord> {
+class Books extends SupaTable<BooksCore, BooksRecord> {
+  /// {@macro Books}
   const Books({required super.supabaseClient})
       : super(BooksRecord._, tableName: 'books', primaryKey: 'id');
 
   @SupaColumnHere<BigInt>(hasDefault: true)
-  static final id = BooksColumn<BigInt>._(
+  static final id = SupaColumn<BooksCore, BigInt, int>(
     name: 'id',
-    valueFromJSON: (v) => BigInt.from(v as int),
-    valueToJSON: (v) => v.toString(),
+    valueFromJSON: BigInt.from,
+    valueToJSON: (v) => v.toInt(),
   );
 
   @SupaColumnHere<String>()
-  static const title = BooksColumn<String>._(name: 'title');
+  static const title = SupaColumn<BooksCore, String, String>(name: 'title');
 
   @SupaColumnHere<String>()
-  static const author = BooksColumn<String>._(name: 'author');
+  static const author = SupaColumn<BooksCore, String, String>(name: 'author');
 
   @SupaColumnHere<int?>()
-  static const pages = BooksColumn<int?>._(name: 'pages');
+  static const pages = SupaColumn<BooksCore, int?, int?>(name: 'pages');
 }
 ```
 

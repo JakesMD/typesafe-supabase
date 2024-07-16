@@ -6,6 +6,12 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 ///
 /// Represents a column in a Supabase table.
 ///
+/// `B` is the core class for the table.
+///
+/// `T` is the type of the value after conversion from the JSON.
+///
+/// `J` is the type of the value before conversion from the JSON.
+///
 /// {@endtemplate}
 class SupaColumn<B extends SupaCore, T, J> {
   /// {@macro SupaColumn}

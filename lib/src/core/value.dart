@@ -4,6 +4,12 @@ import 'package:typesafe_supabase/src/core/core.dart';
 ///
 /// Represents a value that is stored within a record from a Supabase table.
 ///
+/// `B` is the core class for the table.
+///
+/// `T` is the type of the value after conversion from the JSON.
+///
+/// `J` is the type of the value before conversion from the JSON.
+///
 /// {@endtemplate}
 class SupaValue<B extends SupaCore, T, J> {
   /// {@macro SupaValue}
