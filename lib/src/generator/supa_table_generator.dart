@@ -41,7 +41,7 @@ class SupaTableGenerator extends GeneratorForAnnotation<SupaTableHere> {
 
 /// The base class that links all classes for [${element.displayName}] together
 /// to create full type safety.
-class ${prefix}Core extends SupaCore {}
+base class ${prefix}Core extends SupaCore {}
 
 /// Represents a record fetched from [${element.displayName}].
 class ${prefix}Record extends SupaRecord<${prefix}Core> {

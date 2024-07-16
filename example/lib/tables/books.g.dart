@@ -13,7 +13,7 @@ part of 'books.dart';
 
 /// The base class that links all classes for [Books] together
 /// to create full type safety.
-class BooksCore extends SupaCore {}
+final class BooksCore extends SupaCore {}
 
 /// Represents a record fetched from [Books].
 class BooksRecord extends SupaRecord<BooksCore> {

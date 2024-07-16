@@ -6,4 +6,4 @@ export 'value.dart';
 
 /// The base class that links all classes for one table together to create full
 /// type safety.
-class SupaCore {}
+base class SupaCore {}
