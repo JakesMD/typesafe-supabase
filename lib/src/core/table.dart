@@ -2,18 +2,13 @@ import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/src/filter/filter.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
-export 'column.dart';
-export 'insert.dart';
-export 'record.dart';
-export 'value.dart';
-
 /// {@template SupaTable}
 ///
 /// Represents a table in the Supabase database.
 ///
 /// {@endtemplate}
-class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>,
-    R extends SupaRecord<C, V>> with SupaFilterMixin<V> {
+class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
+    with SupaFilterMixin<B> {
   /// {@macro SupaTable}
   const SupaTable(
     this.recordFromJSON, {
@@ -40,8 +35,8 @@ class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>,
   /// fetched.
   /// [filter] is the filter to apply to the query.
   Future<List<R>> fetch({
-    required SupaFilter<V> filter,
-    Set<C>? columns,
+    required SupaFilter<B> filter,
+    Set<SupaColumn<B, dynamic, dynamic>>? columns,
   }) async {
     final response = await supabaseClient
         .from(tableName)
@@ -54,8 +49,8 @@ class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>,
   /// Inserts records into the Supabase table.
   ///
   /// [records] is the list of records to insert.
-  Future<void> insert<T extends SupaTable<C, V, R>>({
-    required List<SupaInsert<V>> records,
+  Future<void> insert({
+    required List<SupaInsert<B>> records,
   }) =>
       supabaseClient
           .from(tableName)
@@ -66,8 +61,8 @@ class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>,
   /// [values] is the set of values to update.
   /// [filter] is the filter to apply to the query.
   Future<void> update({
-    required Set<V> values,
-    required SupaFilter<V> filter,
+    required Set<SupaValue<B, dynamic, dynamic>> values,
+    required SupaFilter<B> filter,
   }) async {
     final json = values.fold<Map<String, dynamic>>(
       {},
@@ -80,6 +75,6 @@ class SupaTable<C extends SupaColumn<dynamic, V>, V extends SupaValue<dynamic>,
   /// Deletes records from the Supabase table.
   ///
   /// [filter] is the filter to apply to the query.
-  Future<void> delete({required SupaFilter<V> filter}) =>
+  Future<void> delete({required SupaFilter<B> filter}) =>
       supabaseClient.from(tableName).delete().supaApply(filter);
 }

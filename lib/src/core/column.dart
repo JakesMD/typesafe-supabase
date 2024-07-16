@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:typesafe_supabase/src/core/core.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@template SupaColumn}
@@ -6,12 +7,12 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 /// Represents a column in a Supabase table.
 ///
 /// {@endtemplate}
-class SupaColumn<T, V extends SupaValue<T>> {
+class SupaColumn<B extends SupaCore, T, J> {
   /// {@macro SupaColumn}
   const SupaColumn({
     required this.name,
-    required this.valueToJSON,
-    required this.valueFromJSON,
+    this.valueToJSON,
+    this.valueFromJSON,
   });
 
   /// The name of the column.
@@ -20,21 +21,21 @@ class SupaColumn<T, V extends SupaValue<T>> {
   /// The function to convert the value to the correct type for the JSON.
   ///
   /// By default, the value will not be converted.
-  final dynamic Function(T value)? valueToJSON;
+  final J Function(T value)? valueToJSON;
 
   /// The function to convert the value from the JSON to the correct type.
   ///
   /// By default, the value will not be converted.
-  final T Function(dynamic value)? valueFromJSON;
+  final T Function(J value)? valueFromJSON;
 
   /// Creates value for the table from the given [value].
   @mustBeOverridden
-  V call(T value) => SupaValue(
+  SupaValue<B, T, J> call(T value) => SupaValue(
         value: value,
         name: name,
         valueToJSON: valueToJSON,
         valueFromJSON: valueFromJSON,
-      ) as V;
+      );
 
   /// Fetches the value of the column from the JSON.
   ///
@@ -43,6 +44,6 @@ class SupaColumn<T, V extends SupaValue<T>> {
     if (!json.containsKey(name)) {
       throw Exception('Column $name not found in JSON.');
     }
-    return valueFromJSON?.call(json[name]) ?? json[name] as T;
+    return valueFromJSON?.call(json[name] as J) ?? json[name] as T;
   }
 }

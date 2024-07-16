@@ -1,9 +1,11 @@
+import 'package:typesafe_supabase/src/core/core.dart';
+
 /// {@template SupaValue}
 ///
 /// Represents a value that is stored within a record from a Supabase table.
 ///
 /// {@endtemplate}
-class SupaValue<T> {
+class SupaValue<B extends SupaCore, T, J> {
   /// {@macro SupaValue}
   const SupaValue({
     required this.value,
@@ -21,16 +23,16 @@ class SupaValue<T> {
   /// The function to convert the value to the correct type for the JSON.
   ///
   /// By default, the value will not be converted.
-  final dynamic Function(T value)? valueToJSON;
+  final J Function(T value)? valueToJSON;
 
   /// The function to convert the value from the JSON to the correct type.
   ///
   /// By default, the value will not be converted.
-  final T Function(dynamic value)? valueFromJSON;
+  final T Function(J value)? valueFromJSON;
+
+  /// Returns the converted value ready for JSON.
+  J toJSONValue() => valueToJSON?.call(value) ?? value as J;
 
   /// Converts the value to a JSON object.
-  Map<String, dynamic> toJSON() => {
-        name: valueToJSON?.call(value) ??
-            (value is BigInt ? value.toString() : value),
-      };
+  Map<String, dynamic> toJSON() => {name: toJSONValue()};
 }

@@ -41,14 +41,14 @@ void main() async {
       Books.title('Paddington Here and Now'),
       Books.author('Michael Bond'),
     },
-    filter: books.equals(Books.id(BigInt.from(4))),
+    filter: books.equal(Books.id(BigInt.from(4))),
   );
 
   // Delete all Paddington books that were not written by Michael Bond.
   await books.delete(
     filter: books
         .textSearch(Books.title('Paddington'))
-        .notEquals(Books.author('Michael Bond')),
+        .notEqual(Books.author('Michael Bond')),
   );
 
   exit(0);

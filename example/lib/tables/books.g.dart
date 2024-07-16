@@ -11,41 +11,12 @@ part of 'books.dart';
 // ignore_for_file: lines_longer_than_80_chars
 // coverage:ignore-file
 
-/// Represents a column in [Books].
-///
-/// This is merely a wrapper around [SupaColumn] to make the table foolproof.
-class BooksColumn<T> extends SupaColumn<T, BooksColumnValue<T>> {
-  const BooksColumn._({
-    required super.name,
-    super.valueToJSON,
-    super.valueFromJSON,
-  });
-
-  @override
-  BooksColumnValue<T> call(T value) => BooksColumnValue._(
-        value: value,
-        name: name,
-        valueFromJSON: valueFromJSON,
-        valueToJSON: valueToJSON,
-      );
-}
-
-/// Represents a value that is stored within a record from [Books].
-///
-/// This is merely a wrapper around [SupaValue] to make the table foolproof.
-class BooksColumnValue<T> extends SupaValue<T> {
-  const BooksColumnValue._({
-    required super.value,
-    required super.name,
-    required super.valueFromJSON,
-    required super.valueToJSON,
-  });
-}
+/// The base class that links all classes for [Books] together
+/// to create full type safety.
+class BooksCore extends SupaCore {}
 
 /// Represents a record fetched from [Books].
-///
-/// This is merely a wrapper around [SupaRecord] to make the table foolproof.
-class BooksRecord extends SupaRecord<BooksColumn, BooksColumnValue> {
+class BooksRecord extends SupaRecord<BooksCore> {
   const BooksRecord._(super.json);
 
   /// The unique identifier of the book.
@@ -74,7 +45,7 @@ class BooksRecord extends SupaRecord<BooksColumn, BooksColumnValue> {
 /// Represents an insert operation on [Books].
 ///
 /// {@endtemplate}
-class BooksInsert extends SupaInsert<BooksColumnValue> {
+class BooksInsert extends SupaInsert<BooksCore> {
   /// {@macro BooksInsert}
   const BooksInsert({
     this.id,
@@ -96,7 +67,7 @@ class BooksInsert extends SupaInsert<BooksColumnValue> {
   final int? pages;
 
   @override
-  Set<BooksColumnValue> get values => {
+  Set<SupaValue<BooksCore, dynamic, dynamic>> get values => {
         if (id != null) Books.id(id!),
         Books.title(title),
         Books.author(author),

@@ -38,42 +38,13 @@ class SupaTableGenerator extends GeneratorForAnnotation<SupaTableHere> {
 // ignore_for_file: lines_longer_than_80_chars
 // coverage:ignore-file
 
-/// Represents a column in [${element.displayName}].
-/// 
-/// This is merely a wrapper around [SupaColumn] to make the table foolproof.
-class ${prefix}Column<T> extends SupaColumn<T, ${prefix}ColumnValue<T>> {
-  const ${prefix}Column._({
-    required super.name,
-    super.valueToJSON,
-    super.valueFromJSON,
-  });
 
-  @override
-  ${prefix}ColumnValue<T> call(T value) => ${prefix}ColumnValue._(
-        value: value,
-        name: name,
-        valueFromJSON: valueFromJSON,
-        valueToJSON: valueToJSON,
-      );
-}
-
-
-/// Represents a value that is stored within a record from [${element.displayName}].
-/// 
-/// This is merely a wrapper around [SupaValue] to make the table foolproof.
-class ${prefix}ColumnValue<T> extends SupaValue<T> {
-  const ${prefix}ColumnValue._({
-    required super.value,
-    required super.name,
-    required super.valueFromJSON,
-    required super.valueToJSON,
-  });
-}
+/// The base class that links all classes for [${element.displayName}] together
+/// to create full type safety.
+class ${prefix}Core extends SupaCore {}
 
 /// Represents a record fetched from [${element.displayName}].
-///
-/// This is merely a wrapper around [SupaRecord] to make the table foolproof.
-class ${prefix}Record extends SupaRecord<${prefix}Column, ${prefix}ColumnValue> {
+class ${prefix}Record extends SupaRecord<${prefix}Core> {
   const ${prefix}Record._(super.json);
 
   ${columns.map((c) => '  ${c.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if the column was not fetched.\n  ${c.type} get ${c.name} => call(${element.displayName}.${c.name});').join('\n  ')}
@@ -84,7 +55,7 @@ class ${prefix}Record extends SupaRecord<${prefix}Column, ${prefix}ColumnValue> 
 /// Represents an insert operation on [${element.displayName}].
 ///
 /// {@endtemplate}
-class ${prefix}Insert extends SupaInsert<${prefix}ColumnValue> {
+class ${prefix}Insert extends SupaInsert<${prefix}Core> {
   /// {@macro ${prefix}Insert}
   const ${prefix}Insert({
     ${columns.map((c) => '${!c.isNullableOrHasDefault ? 'required' : ''} this.${c.name},').join('\n    ')}
@@ -93,7 +64,7 @@ class ${prefix}Insert extends SupaInsert<${prefix}ColumnValue> {
   ${columns.map((c) => '  ${c.documentationComment.replaceAll('\n', '\n  ')}\n  final ${c.type}${c.hasDefault ? '?' : ''} ${c.name};').join('\n  ')}
 
   @override
-  Set<${prefix}ColumnValue> get values => {
+  Set<SupaValue<${prefix}Core, dynamic, dynamic>> get values => {
         ${columns.map((c) => '${c.isNullableOrHasDefault ? 'if (${c.name} != null) ' : ''}${element.displayName}.${c.name}(${c.name}${c.hasDefault ? '!' : ''}),').join('\n          ')}
       };
 }''';

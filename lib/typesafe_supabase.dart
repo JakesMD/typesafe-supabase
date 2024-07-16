@@ -2,6 +2,6 @@
 /// testing in other packages.
 library csupabase_client;
 
+export 'src/core/core.dart';
 export 'src/filter/filter.dart' hide SupaFilterBuilder;
 export 'src/generator/annotations.dart';
-export 'src/table/table.dart';

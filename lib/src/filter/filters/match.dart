@@ -1,24 +1,31 @@
-part of '../filter.dart';
+import 'package:meta/meta.dart';
+import 'package:supabase/supabase.dart';
+import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@template SupaMatchFilter}
 ///
-/// A filter that checks if the value of the column matches any of the values in
-/// [matchValues].
+/// ### Match an associated value
+///
+/// A filter that finds all rows whose columns match the specified [values].
+///
+/// `values`: The values to filter with.
 ///
 /// {@endtemplate}
-class SupaMatchFilter<V extends SupaValue<dynamic>> extends SupaFilter<V> {
-  SupaMatchFilter._(this.matchValues, super.previousFilter);
+class SupaMatchFilter<B extends SupaCore> extends SupaFilter<B> {
+  /// {@macro SupaMatchFilter}
+  @internal
+  const SupaMatchFilter(this.values, super.previousFilter);
 
-  /// The values to check matches for.
-  final Set<V> matchValues;
+  /// The values to filter with.
+  final Set<SupaValue<B, dynamic, dynamic>> values;
 
   @override
   PostgrestFilterBuilder<T> build<T>(PostgrestFilterBuilder<T> builder) {
-    final matcher = matchValues.fold<Map<String, dynamic>>(
+    final matcher = values.fold<Map<String, Object>>(
       {},
-      (prev, column) => {...prev, column.name: column.value},
+      (prev, column) => {...prev, column.name: column.toJSONValue() as Object},
     );
 
-    return builder.match(matcher as Map<String, Object>);
+    return builder.match(matcher);
   }
 }

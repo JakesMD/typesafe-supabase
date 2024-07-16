@@ -105,3 +105,7 @@ If your column is nullable, then setting `hasDefault` is not required.
 
 #### Documentation comments
 If you document your columns, the documentation comment will be applied to `BooksInsert.title` and `BooksRecord.title`, for example.
+
+
+## Known limitations
+- Currently unable to filter within JSON columns. For now use the `.filter()` custom filter.

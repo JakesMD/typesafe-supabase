@@ -4,8 +4,8 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 @internal
 extension SupaFilterBuilder<T> on PostgrestFilterBuilder<T> {
-  PostgrestFilterBuilder<T> supaApply<V extends SupaValue<dynamic>>(
-    SupaFilter<V> filter,
+  PostgrestFilterBuilder<T> supaApply<B extends SupaCore>(
+    SupaFilter<B> filter,
   ) {
     final filters = <SupaFilter>[];
     SupaFilter? current = filter;
