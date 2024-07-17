@@ -11,13 +11,17 @@ export 'range_type.dart';
 ///
 /// Represents a filter that can be applied to a Supabase query.
 ///
+/// Filters allow you to only return rows that match certain conditions.
+///
+/// Filters can be used on select(), update(), upsert(), and delete() queries.
+///
 /// {@endtemplate}
 class SupaFilter<B extends SupaCore> implements SupaFilterMixin<B> {
   /// {@macro SupaFilter}
   @internal
   const SupaFilter(this.previousFilter);
 
-  /// The filter that was applied before this filter.
+  /// The filter that was applied before this one.
   final SupaFilter<B>? previousFilter;
 
   /// Cascades the Supabase filter onto the provided [builder].

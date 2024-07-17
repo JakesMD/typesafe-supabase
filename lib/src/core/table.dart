@@ -1,5 +1,6 @@
 import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/src/filter/filter.dart';
+import 'package:typesafe_supabase/src/modifier/modifier.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@template SupaTable}
@@ -8,7 +9,7 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 ///
 /// {@endtemplate}
 class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
-    with SupaFilterMixin<B> {
+    with SupaFilterMixin<B>, SupaModifierMixin<B, R> {
   /// {@macro SupaTable}
   const SupaTable(
     this.recordFromJSON, {
@@ -34,16 +35,32 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   /// [columns] is the set of columns to fetch. If null, all columns are
   /// fetched.
   /// [filter] is the filter to apply to the query.
-  Future<List<R>> fetch({
+  Future<T> fetch<T>({
     required SupaFilter<B> filter,
+    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
     Set<SupaColumn<B, dynamic, dynamic>>? columns,
   }) async {
     final response = await supabaseClient
         .from(tableName)
         .select(columns?.map((c) => c.name).join(', ') ?? '*')
-        .supaApply(filter);
+        .supaApplyFilter(filter)
+        .supaApplyModifier(modifier);
 
-    return response.map(recordFromJSON).toList();
+    print(
+      modifier
+          is SupaModifier<B, R, List<R>, List<Map<String, dynamic>>, dynamic>,
+    );
+
+    if (modifier
+        is SupaModifier<B, R, List<R>, List<Map<String, dynamic>>, dynamic>) {
+      return (response as List<Map<String, dynamic>>)
+          .map(recordFromJSON)
+          .toList() as T;
+    } else if (modifier
+        is SupaModifier<B, R, R, Map<String, dynamic>, dynamic>) {
+      return recordFromJSON(response as Map<String, dynamic>) as T;
+    }
+    return response as T;
   }
 
   /// Inserts records into the Supabase table.
@@ -69,12 +86,12 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
       (prev, column) => prev..addAll(column.toJSON()),
     );
 
-    await supabaseClient.from(tableName).update(json).supaApply(filter);
+    await supabaseClient.from(tableName).update(json).supaApplyFilter(filter);
   }
 
   /// Deletes records from the Supabase table.
   ///
   /// [filter] is the filter to apply to the query.
   Future<void> delete({required SupaFilter<B> filter}) =>
-      supabaseClient.from(tableName).delete().supaApply(filter);
+      supabaseClient.from(tableName).delete().supaApplyFilter(filter);
 }

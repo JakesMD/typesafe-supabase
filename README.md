@@ -44,14 +44,16 @@ Now use it!
 // Create the books table.
 final books = Books(supabaseClient: supabaseClient);
 
-// Fetch all Paddington books.
-final records = await books.fetch(
+// Fetch a Paddington book.
+final book = await books.fetch(
   columns: {Books.id, Books.title},
   filter: books.textSearch(Books.title('Paddington')),
+  modifier: books.order(Books.title).limit(1).single(),
 );
 
-// The title of the first book.
-final title = records.first.title;
+// Print the title of the book.
+print(book.title);
+
 
 // Insert a new Paddington book.
 await books.insert(
