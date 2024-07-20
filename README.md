@@ -1,9 +1,15 @@
-# Type-Safe Supabase for Dart
-A dart package that enables type-safe queries to a Supabase database.
+# Type-safe supabase for dart
+> 🚨 This is **NOT** an official *supabase* package developed by the *supabase* team!
+- [x] ⚡️ Type-safe queries
+- [x] ⚡️ Foolproof filters
+- [x] ⚡️ Foolproof modifiers
+- [x] ⚡️ Minimal setup
+- [x] ⚡️ Minimal code generation
 
-# 🚧 WIP 🚧
+## 🎮 Basic Usage
 
-## Basic Usage
+> 🚧 **WIP!** This package is still under development. Use it with caution and [file any potential issues you see](https://github.com/JakesMD/typesafe-supabase/issues).
+
 First, create your tables that replicate the ones in your Supabase project:
 ``` dart
 // authors.dart
@@ -117,7 +123,7 @@ await books.delete(
 );
 ```
 
-# TODO
+## 📋 TODO
 - [ ] Custom schemas (`supabase.schema('myschema').from('mytable')`)
 - [ ] Query JSON data (`.select('address->city')`)
 - [ ] Filter by JSON key (`.eq('address->postcode', 90210)`)
@@ -127,3 +133,4 @@ await books.delete(
 - [ ] `upsert` query with returned records
 - [ ] `stream` query with stream filters
 - [ ] `count(CountOption)` modifier
+- [ ] In-depth documentation
