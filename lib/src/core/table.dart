@@ -38,18 +38,13 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   Future<T> fetch<T>({
     required SupaFilter<B> filter,
     required SupaModifier<B, R, T, dynamic, dynamic> modifier,
-    Set<SupaColumn<B, dynamic, dynamic>>? columns,
+    Set<SupaColumnBase<B>>? columns,
   }) async {
     final response = await supabaseClient
         .from(tableName)
-        .select(columns?.map((c) => c.name).join(', ') ?? '*')
+        .select(columns?.map((c) => c.queryPattern).join(', ') ?? '*')
         .supaApplyFilter(filter)
         .supaApplyModifier(modifier);
-
-    print(
-      modifier
-          is SupaModifier<B, R, List<R>, List<Map<String, dynamic>>, dynamic>,
-    );
 
     if (modifier
         is SupaModifier<B, R, List<R>, List<Map<String, dynamic>>, dynamic>) {

@@ -13,11 +13,16 @@ part of 'books.dart';
 
 /// The base class that links all classes for [Books] together
 /// to create full type safety.
-final class BooksCore extends SupaCore {}
+base class BooksCore extends SupaCore {}
 
+/// {@template BooksRecord}
+///
 /// Represents a record fetched from [Books].
+///
+/// {@endtemplate}
 class BooksRecord extends SupaRecord<BooksCore> {
-  const BooksRecord._(super.json);
+  /// {@macro BooksRecord}
+  const BooksRecord(super.json);
 
   /// The unique identifier of the book.
   ///
@@ -29,15 +34,20 @@ class BooksRecord extends SupaRecord<BooksCore> {
   /// This will throw an exception if the column was not fetched.
   String get title => call(Books.title);
 
-  /// The author of the book.
+  /// The unique identifier of the author of the book.
   ///
   /// This will throw an exception if the column was not fetched.
-  String get author => call(Books.author);
+  BigInt get authorID => call(Books.authorID);
 
   /// The number of pages in the book.
   ///
   /// This will throw an exception if the column was not fetched.
   int? get pages => call(Books.pages);
+
+  /// References the `authors` table joined by the `author_id` column.
+  ///
+  /// This will throw an exception if no joined columns were fetched.
+  AuthorsRecord get author => referenceSingle(Books.author);
 }
 
 /// {@template BooksInsert}
@@ -50,7 +60,7 @@ class BooksInsert extends SupaInsert<BooksCore> {
   const BooksInsert({
     this.id,
     required this.title,
-    required this.author,
+    required this.authorID,
     this.pages,
   });
 
@@ -60,8 +70,8 @@ class BooksInsert extends SupaInsert<BooksCore> {
   /// The title of the book.
   final String title;
 
-  /// The author of the book.
-  final String author;
+  /// The unique identifier of the author of the book.
+  final BigInt authorID;
 
   /// The number of pages in the book.
   final int? pages;
@@ -70,7 +80,7 @@ class BooksInsert extends SupaInsert<BooksCore> {
   Set<SupaValue<BooksCore, dynamic, dynamic>> get values => {
         if (id != null) Books.id(id!),
         Books.title(title),
-        Books.author(author),
+        Books.authorID(authorID),
         if (pages != null) Books.pages(pages),
       };
 }

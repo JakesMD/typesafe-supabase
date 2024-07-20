@@ -37,7 +37,11 @@ class SupaValue<B extends SupaCore, T, J> {
   final T Function(J value)? valueFromJSON;
 
   /// Returns the converted value ready for JSON.
-  J toJSONValue() => valueToJSON?.call(value) ?? value as J;
+  J toJSONValue() {
+    if (valueToJSON != null) return valueToJSON!(value);
+    if (value is BigInt) return (value as BigInt).toInt() as J;
+    return value as J;
+  }
 
   /// Converts the value to a JSON object.
   Map<String, dynamic> toJSON() => {name: toJSONValue()};

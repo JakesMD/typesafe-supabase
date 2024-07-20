@@ -24,8 +24,6 @@ export 'modifiers/_modifiers.dart';
 ///
 /// `T` is the type of the response after the modifier is applied.
 ///
-/// `P` is the type of the response before the modifier is applied.
-///
 /// `O` is the type of the PostgrestTransformBuilder after the modifier is
 /// applied.
 ///

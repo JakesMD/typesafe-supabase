@@ -1,4 +1,3 @@
-import 'package:meta/meta.dart';
 import 'package:typesafe_supabase/src/core/core.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
@@ -13,13 +12,13 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 /// `J` is the type of the value before conversion from the JSON.
 ///
 /// {@endtemplate}
-class SupaColumn<B extends SupaCore, T, J> {
+class SupaColumn<B extends SupaCore, T, J> extends SupaColumnBase<B> {
   /// {@macro SupaColumn}
   const SupaColumn({
     required this.name,
     this.valueToJSON,
     this.valueFromJSON,
-  });
+  }) : super(queryPattern: name);
 
   /// The name of the column.
   final String name;
@@ -35,7 +34,7 @@ class SupaColumn<B extends SupaCore, T, J> {
   final T Function(J value)? valueFromJSON;
 
   /// Creates value for the table from the given [value].
-  @mustBeOverridden
+
   SupaValue<B, T, J> call(T value) => SupaValue(
         value: value,
         name: name,
@@ -50,6 +49,8 @@ class SupaColumn<B extends SupaCore, T, J> {
     if (!json.containsKey(name)) {
       throw Exception('Column $name not found in JSON.');
     }
-    return valueFromJSON?.call(json[name] as J) ?? json[name] as T;
+    if (valueFromJSON != null) return valueFromJSON!(json[name] as J);
+    if (T == BigInt) return BigInt.from(json[name] as int) as T;
+    return json[name] as T;
   }
 }
