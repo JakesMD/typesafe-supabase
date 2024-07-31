@@ -16,6 +16,7 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
     required this.tableName,
     required this.primaryKey,
     required this.supabaseClient,
+    this.schema = 'public',
   });
 
   /// The name of the table.
@@ -23,6 +24,9 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
 
   /// The primary key of the table.
   final String primaryKey;
+
+  /// The schema of the table. Defaults to `public`.
+  final String schema;
 
   /// The client instance used to interact with supabase.
   final SupabaseClient supabaseClient;
@@ -41,6 +45,7 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
     Set<SupaColumnBase<B>>? columns,
   }) async {
     final response = await supabaseClient
+        .schema(schema)
         .from(tableName)
         .select(columns?.map((c) => c.queryPattern).join(', ') ?? '*')
         .supaApplyFilter(filter)
@@ -65,6 +70,7 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
     required List<SupaInsert<B>> records,
   }) =>
       supabaseClient
+          .schema(schema)
           .from(tableName)
           .insert(records.map((r) => r.toJSON()).toList());
 
@@ -81,12 +87,19 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
       (prev, column) => prev..addAll(column.toJSON()),
     );
 
-    await supabaseClient.from(tableName).update(json).supaApplyFilter(filter);
+    await supabaseClient
+        .schema(schema)
+        .from(tableName)
+        .update(json)
+        .supaApplyFilter(filter);
   }
 
   /// Deletes records from the Supabase table.
   ///
   /// [filter] is the filter to apply to the query.
-  Future<void> delete({required SupaFilter<B> filter}) =>
-      supabaseClient.from(tableName).delete().supaApplyFilter(filter);
+  Future<void> delete({required SupaFilter<B> filter}) => supabaseClient
+      .schema(schema)
+      .from(tableName)
+      .delete()
+      .supaApplyFilter(filter);
 }

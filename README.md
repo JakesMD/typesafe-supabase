@@ -1,5 +1,5 @@
 # Type-safe supabase for dart
-> 🚨 This is **NOT** an official *supabase* package developed by the *supabase* team!
+> 🚨 This is **NOT** an official *supabase* package and **NOT** developed by the *supabase* team!
 - [x] ⚡️ Type-safe queries
 - [x] ⚡️ Foolproof filters
 - [x] ⚡️ Foolproof modifiers
@@ -124,7 +124,6 @@ await books.delete(
 ```
 
 ## 📋 TODO
-- [ ] Custom schemas (`supabase.schema('myschema').from('mytable')`)
 - [ ] Query JSON data (`.select('address->city')`)
 - [ ] Filter by JSON key (`.eq('address->postcode', 90210)`)
 - [ ] Filter by joined table column (`.eq('countries.name', 'Indonesia')`)
