@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.5
+✨ Add upsert query
+
 ## 0.0.1-dev.4
 ✨ Add modifiers to update query
 

@@ -112,6 +112,38 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
     return _castResponse(modifier, response);
   }
 
+  /// Updates or inserts records in the Supabase table.
+  ///
+  /// `values`: The set of values to update or insert.
+  ///
+  /// `filter`: The filter to apply to the query.
+  ///
+  /// `columns`: The set of columns to fetch. If null, all columns are
+  /// fetched.
+  ///
+  /// `modifier`: The modifier to apply to the query.
+  Future<T> upsert<T>({
+    required Set<SupaValue<B, dynamic, dynamic>> values,
+    required SupaFilter<B> filter,
+    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    Set<SupaColumnBase<B>>? columns,
+  }) async {
+    final json = values.fold<Map<String, dynamic>>(
+      {},
+      (prev, column) => prev..addAll(column.toJSON()),
+    );
+
+    final response = await supabaseClient
+        .schema(schema)
+        .from(tableName)
+        .upsert(json)
+        .supaApplyFilter(filter)
+        .select(_generateColumnsPattern(columns))
+        .supaApplyModifier(modifier);
+
+    return _castResponse(modifier, response);
+  }
+
   /// Deletes records from the Supabase table.
   ///
   /// `filter`: The filter to apply to the query.
