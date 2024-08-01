@@ -36,9 +36,12 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
 
   /// Fetches records from the Supabase table.
   ///
-  /// [columns] is the set of columns to fetch. If null, all columns are
+  /// `columns`: The set of columns to fetch. If null, all columns are
   /// fetched.
-  /// [filter] is the filter to apply to the query.
+  ///
+  /// `filter`: The filter to apply to the query.
+  ///
+  /// `modifier`: The modifier to apply to the query.
   Future<T> fetch<T>({
     required SupaFilter<B> filter,
     required SupaModifier<B, R, T, dynamic, dynamic> modifier,
@@ -47,37 +50,41 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
     final response = await supabaseClient
         .schema(schema)
         .from(tableName)
-        .select(columns?.map((c) => c.queryPattern).join(', ') ?? '*')
+        .select(_generateColumnsPattern(columns))
         .supaApplyFilter(filter)
         .supaApplyModifier(modifier);
 
-    if (modifier
-        is SupaModifier<B, R, List<R>, List<Map<String, dynamic>>, dynamic>) {
-      return (response as List<Map<String, dynamic>>)
-          .map(recordFromJSON)
-          .toList() as T;
-    } else if (modifier
-        is SupaModifier<B, R, R, Map<String, dynamic>, dynamic>) {
-      return recordFromJSON(response as Map<String, dynamic>) as T;
-    }
-    return response as T;
+    return _castResponse(modifier, response);
   }
 
   /// Inserts records into the Supabase table.
   ///
-  /// [records] is the list of records to insert.
-  Future<void> insert({
+  /// `records`: The list of records to insert.
+  ///
+  /// `columns`: The set of columns to fetch. If null, all columns are
+  /// fetched.
+  ///
+  /// `modifier`: The modifier to apply to the query.
+  Future<T> insert<T>({
     required List<SupaInsert<B>> records,
-  }) =>
-      supabaseClient
-          .schema(schema)
-          .from(tableName)
-          .insert(records.map((r) => r.toJSON()).toList());
+    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    Set<SupaColumnBase<B>>? columns,
+  }) async {
+    final response = await supabaseClient
+        .schema(schema)
+        .from(tableName)
+        .insert(records.map((r) => r.toJSON()).toList())
+        .select(_generateColumnsPattern(columns))
+        .supaApplyModifier(modifier);
+
+    return _castResponse(modifier, response);
+  }
 
   /// Updates records in the Supabase table.
   ///
-  /// [values] is the set of values to update.
-  /// [filter] is the filter to apply to the query.
+  /// `values`: The set of values to update.
+  ///
+  /// `filter`: The filter to apply to the query.
   Future<void> update({
     required Set<SupaValue<B, dynamic, dynamic>> values,
     required SupaFilter<B> filter,
@@ -96,10 +103,29 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
 
   /// Deletes records from the Supabase table.
   ///
-  /// [filter] is the filter to apply to the query.
+  /// `filter`: The filter to apply to the query.
   Future<void> delete({required SupaFilter<B> filter}) => supabaseClient
       .schema(schema)
       .from(tableName)
       .delete()
       .supaApplyFilter(filter);
+
+  String _generateColumnsPattern(Set<SupaColumnBase<B>>? columns) =>
+      columns?.map((c) => c.queryPattern).join(', ') ?? '*';
+
+  T _castResponse<T>(
+    SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    dynamic response,
+  ) {
+    if (modifier
+        is SupaModifier<B, R, List<R>, List<Map<String, dynamic>>, dynamic>) {
+      return (response as List<Map<String, dynamic>>)
+          .map(recordFromJSON)
+          .toList() as T;
+    } else if (modifier
+        is SupaModifier<B, R, R, Map<String, dynamic>, dynamic>) {
+      return recordFromJSON(response as Map<String, dynamic>) as T;
+    }
+    return response as T;
+  }
 }

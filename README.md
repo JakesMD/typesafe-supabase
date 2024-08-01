@@ -104,6 +104,7 @@ await books.insert(
   records: [
     BooksInsert(title: 'To be updated', authorID: BigInt.two, pages: 160),
   ],
+  modifier: books.none(),
 );
 
 // Update the title and author of the book with the ID 4.
@@ -127,7 +128,6 @@ await books.delete(
 - [ ] Query JSON data (`.select('address->city')`)
 - [ ] Filter by JSON key (`.eq('address->postcode', 90210)`)
 - [ ] Filter by joined table column (`.eq('countries.name', 'Indonesia')`)
-- [ ] `insert` query with returned records
 - [ ] `update` query with returned records
 - [ ] `upsert` query with returned records
 - [ ] `stream` query with stream filters

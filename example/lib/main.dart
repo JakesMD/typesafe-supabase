@@ -34,6 +34,7 @@ void main() async {
     records: [
       BooksInsert(title: 'To be updated', authorID: BigInt.two, pages: 160),
     ],
+    modifier: books.none(),
   );
 
   // Update the title and author of the book with the ID 4.

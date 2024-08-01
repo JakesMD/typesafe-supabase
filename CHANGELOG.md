@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.3
+✨ Add modifiers to insert query
+
 ## 0.0.1-dev.2
 ✨ Add custom schemas
 
