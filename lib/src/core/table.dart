@@ -85,20 +85,31 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   /// `values`: The set of values to update.
   ///
   /// `filter`: The filter to apply to the query.
-  Future<void> update({
+  ///
+  /// `columns`: The set of columns to fetch. If null, all columns are
+  /// fetched.
+  ///
+  /// `modifier`: The modifier to apply to the query.
+  Future<T> update<T>({
     required Set<SupaValue<B, dynamic, dynamic>> values,
     required SupaFilter<B> filter,
+    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    Set<SupaColumnBase<B>>? columns,
   }) async {
     final json = values.fold<Map<String, dynamic>>(
       {},
       (prev, column) => prev..addAll(column.toJSON()),
     );
 
-    await supabaseClient
+    final response = await supabaseClient
         .schema(schema)
         .from(tableName)
         .update(json)
-        .supaApplyFilter(filter);
+        .supaApplyFilter(filter)
+        .select(_generateColumnsPattern(columns))
+        .supaApplyModifier(modifier);
+
+    return _castResponse(modifier, response);
   }
 
   /// Deletes records from the Supabase table.

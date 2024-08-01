@@ -44,6 +44,7 @@ void main() async {
       Books.authorID(BigInt.one),
     },
     filter: books.equal(Books.id(BigInt.from(4))),
+    modifier: books.none(),
   );
 
   // Delete all Paddington books that were not written by Michael Bond.

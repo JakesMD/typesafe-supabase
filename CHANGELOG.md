@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.4
+✨ Add modifiers to update query
+
 ## 0.0.1-dev.3
 ✨ Add modifiers to insert query
 

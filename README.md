@@ -114,6 +114,7 @@ await books.update(
     Books.authorID(BigInt.one),
   },
   filter: books.equal(Books.id(BigInt.from(4))),
+  modifier: books.none(),
 );
 
 // Delete all Paddington books that were not written by Michael Bond.
@@ -128,7 +129,6 @@ await books.delete(
 - [ ] Query JSON data (`.select('address->city')`)
 - [ ] Filter by JSON key (`.eq('address->postcode', 90210)`)
 - [ ] Filter by joined table column (`.eq('countries.name', 'Indonesia')`)
-- [ ] `update` query with returned records
 - [ ] `upsert` query with returned records
 - [ ] `stream` query with stream filters
 - [ ] `count(CountOption)` modifier
