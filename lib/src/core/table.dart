@@ -70,14 +70,19 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
     required SupaModifier<B, R, T, dynamic, dynamic> modifier,
     Set<SupaColumnBase<B>>? columns,
   }) async {
-    final response = await supabaseClient
+    final request = supabaseClient
         .schema(schema)
         .from(tableName)
-        .insert(records.map((r) => r.toJSON()).toList())
-        .select(_generateColumnsPattern(columns))
-        .supaApplyModifier(modifier);
+        .insert(records.map((r) => r.toJSON()).toList());
 
-    return _castResponse(modifier, response);
+    if (modifier is! SupaNoneModifier<B, R>) {
+      final response = await request
+          .select(_generateColumnsPattern(columns))
+          .supaApplyModifier(modifier);
+      return _castResponse(modifier, response);
+    }
+
+    return (await request) as T;
   }
 
   /// Updates records in the Supabase table.
@@ -101,20 +106,25 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
       (prev, column) => prev..addAll(column.toJSON()),
     );
 
-    final response = await supabaseClient
+    final request = supabaseClient
         .schema(schema)
         .from(tableName)
         .update(json)
-        .supaApplyFilter(filter)
-        .select(_generateColumnsPattern(columns))
-        .supaApplyModifier(modifier);
+        .supaApplyFilter(filter);
 
-    return _castResponse(modifier, response);
+    if (modifier is! SupaNoneModifier<B, R>) {
+      final response = await request
+          .select(_generateColumnsPattern(columns))
+          .supaApplyModifier(modifier);
+      return _castResponse(modifier, response);
+    }
+
+    return (await request) as T;
   }
 
   /// Updates or inserts records in the Supabase table.
   ///
-  /// `values`: The set of values to update or insert.
+  /// `records`: The list of records to update or insert.
   ///
   /// `filter`: The filter to apply to the query.
   ///
@@ -123,35 +133,55 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   ///
   /// `modifier`: The modifier to apply to the query.
   Future<T> upsert<T>({
-    required Set<SupaValue<B, dynamic, dynamic>> values,
+    required List<SupaInsert<B>> records,
     required SupaFilter<B> filter,
     required SupaModifier<B, R, T, dynamic, dynamic> modifier,
     Set<SupaColumnBase<B>>? columns,
   }) async {
-    final json = values.fold<Map<String, dynamic>>(
-      {},
-      (prev, column) => prev..addAll(column.toJSON()),
-    );
-
-    final response = await supabaseClient
+    final request = supabaseClient
         .schema(schema)
         .from(tableName)
-        .upsert(json)
-        .supaApplyFilter(filter)
-        .select(_generateColumnsPattern(columns))
-        .supaApplyModifier(modifier);
+        .upsert(records.map((r) => r.toJSON()).toList())
+        .supaApplyFilter(filter);
 
-    return _castResponse(modifier, response);
+    if (modifier is! SupaNoneModifier<B, R>) {
+      final response = await request
+          .select(_generateColumnsPattern(columns))
+          .supaApplyModifier(modifier);
+      return _castResponse(modifier, response);
+    }
+
+    return (await request) as T;
   }
 
   /// Deletes records from the Supabase table.
   ///
   /// `filter`: The filter to apply to the query.
-  Future<void> delete({required SupaFilter<B> filter}) => supabaseClient
-      .schema(schema)
-      .from(tableName)
-      .delete()
-      .supaApplyFilter(filter);
+  ///
+  /// `columns`: The set of columns to fetch. If null, all columns are
+  /// fetched.
+  ///
+  /// `modifier`: The modifier to apply to the query.
+  Future<T> delete<T>({
+    required SupaFilter<B> filter,
+    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    Set<SupaColumnBase<B>>? columns,
+  }) async {
+    final request = supabaseClient
+        .schema(schema)
+        .from(tableName)
+        .delete()
+        .supaApplyFilter(filter);
+
+    if (modifier is! SupaNoneModifier<B, R>) {
+      final response = await request
+          .select(_generateColumnsPattern(columns))
+          .supaApplyModifier(modifier);
+      return _castResponse(modifier, response);
+    }
+
+    return (await request) as T;
+  }
 
   String _generateColumnsPattern(Set<SupaColumnBase<B>>? columns) =>
       columns?.map((c) => c.queryPattern).join(', ') ?? '*';

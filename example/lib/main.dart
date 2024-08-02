@@ -52,6 +52,7 @@ void main() async {
     filter: books
         .textSearch(Books.title('Paddington'))
         .notEqual(Books.authorID(BigInt.one)),
+    modifier: books.none(),
   );
 
   exit(0);

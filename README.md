@@ -122,6 +122,7 @@ await books.delete(
   filter: books
       .textSearch(Books.title('Paddington'))
       .notEqual(Books.authorID(BigInt.one)),
+  modifier: books.none(),
 );
 ```
 
