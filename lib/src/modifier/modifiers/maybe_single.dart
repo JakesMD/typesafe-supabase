@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'package:meta/meta.dart';
 import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
@@ -12,8 +10,12 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 ///
 /// {@endtemplate}
 class SupaMaybeSingleModifier<B extends SupaCore, R extends SupaRecord<B>>
-    extends SupaModifier<B, R, R?, Map<String, dynamic>?,
-        List<Map<String, dynamic>>> {
+    extends SupaModifier<
+        B,
+        R,
+        R?,
+        PostgrestTransformBuilder<Map<String, dynamic>?>,
+        PostgrestTransformBuilder<List<Map<String, dynamic>>>> {
   /// {@macro SupaMaybeSingleModifier}
   @internal
   const SupaMaybeSingleModifier(super.previousModifier);

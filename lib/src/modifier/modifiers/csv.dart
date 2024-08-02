@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_positional_boolean_parameters
-
 import 'package:meta/meta.dart';
 import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
@@ -12,7 +10,8 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 ///
 /// {@endtemplate}
 class SupaCSVModifier<B extends SupaCore, R extends SupaRecord<B>>
-    extends SupaModifier<B, R, R, String, dynamic> {
+    extends SupaModifier<B, R, R, PostgrestTransformBuilder<String>,
+        PostgrestTransformBuilder<dynamic>> {
   /// {@macro SupaCSVModifier}
   @internal
   const SupaCSVModifier(super.previousModifier);

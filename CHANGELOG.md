@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.7
+✨ Add `count` modifier
+
 ## 0.0.1-dev.6
 ✨ Add modifiers to `delete` query
 🐛 Fix `upsert` taking values instead of `SupaInsert`s as an argument

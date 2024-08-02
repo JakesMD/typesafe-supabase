@@ -1,4 +1,5 @@
 export 'all.dart';
+export 'count.dart';
 export 'csv.dart';
 export 'limit.dart';
 export 'maybe_single.dart';

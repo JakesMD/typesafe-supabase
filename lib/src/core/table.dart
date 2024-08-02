@@ -44,7 +44,9 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   /// `modifier`: The modifier to apply to the query.
   Future<T> fetch<T>({
     required SupaFilter<B> filter,
-    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    required SupaModifier<B, R, T, PostgrestBuilder<dynamic, dynamic, dynamic>,
+            PostgrestBuilder<dynamic, dynamic, dynamic>>
+        modifier,
     Set<SupaColumnBase<B>>? columns,
   }) async {
     final response = await supabaseClient
@@ -67,7 +69,9 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   /// `modifier`: The modifier to apply to the query.
   Future<T> insert<T>({
     required List<SupaInsert<B>> records,
-    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    required SupaModifier<B, R, T, PostgrestBuilder<dynamic, dynamic, dynamic>,
+            PostgrestBuilder<dynamic, dynamic, dynamic>>
+        modifier,
     Set<SupaColumnBase<B>>? columns,
   }) async {
     final request = supabaseClient
@@ -98,7 +102,9 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   Future<T> update<T>({
     required Set<SupaValue<B, dynamic, dynamic>> values,
     required SupaFilter<B> filter,
-    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    required SupaModifier<B, R, T, PostgrestBuilder<dynamic, dynamic, dynamic>,
+            PostgrestBuilder<dynamic, dynamic, dynamic>>
+        modifier,
     Set<SupaColumnBase<B>>? columns,
   }) async {
     final json = values.fold<Map<String, dynamic>>(
@@ -135,7 +141,9 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   Future<T> upsert<T>({
     required List<SupaInsert<B>> records,
     required SupaFilter<B> filter,
-    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    required SupaModifier<B, R, T, PostgrestBuilder<dynamic, dynamic, dynamic>,
+            PostgrestBuilder<dynamic, dynamic, dynamic>>
+        modifier,
     Set<SupaColumnBase<B>>? columns,
   }) async {
     final request = supabaseClient
@@ -164,7 +172,9 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   /// `modifier`: The modifier to apply to the query.
   Future<T> delete<T>({
     required SupaFilter<B> filter,
-    required SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    required SupaModifier<B, R, T, PostgrestBuilder<dynamic, dynamic, dynamic>,
+            PostgrestBuilder<dynamic, dynamic, dynamic>>
+        modifier,
     Set<SupaColumnBase<B>>? columns,
   }) async {
     final request = supabaseClient
@@ -187,17 +197,27 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
       columns?.map((c) => c.queryPattern).join(', ') ?? '*';
 
   T _castResponse<T>(
-    SupaModifier<B, R, T, dynamic, dynamic> modifier,
+    SupaModifier<B, R, T, PostgrestBuilder<dynamic, dynamic, dynamic>,
+            PostgrestBuilder<dynamic, dynamic, dynamic>>
+        modifier,
     dynamic response,
   ) {
-    if (modifier
-        is SupaModifier<B, R, List<R>, List<Map<String, dynamic>>, dynamic>) {
+    if (modifier is SupaModifier<B, R, List<R>,
+        PostgrestTransformBuilder<List<Map<String, dynamic>>>, dynamic>) {
       return (response as List<Map<String, dynamic>>)
           .map(recordFromJSON)
           .toList() as T;
-    } else if (modifier
-        is SupaModifier<B, R, R, Map<String, dynamic>, dynamic>) {
+    } else if (modifier is SupaModifier<B, R, R,
+        PostgrestTransformBuilder<Map<String, dynamic>>, dynamic>) {
       return recordFromJSON(response as Map<String, dynamic>) as T;
+    } else if (modifier is SupaCountModifier<B, R>) {
+      return SupaCountResponse<B, R>(
+        count: (response as PostgrestResponse).count,
+        records: (response as PostgrestResponse<List<Map<String, dynamic>>>)
+            .data
+            .map(recordFromJSON)
+            .toList(),
+      ) as T;
     }
     return response as T;
   }

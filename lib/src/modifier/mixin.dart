@@ -1,9 +1,14 @@
+import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// A mixin that provides modifiers.
 mixin SupaModifierMixin<B extends SupaCore, R extends SupaRecord<B>> {
   /// {@macro SupaAllModifier}
   SupaAllModifier<B, R> all() => const SupaAllModifier();
+
+  /// {@macro SupaCountModifier}
+  SupaCountModifier<B, R> count([CountOption option = CountOption.exact]) =>
+      SupaCountModifier(option, null);
 
   /// {@macro SupaCSVModifier}
   SupaCSVModifier<B, R> csv() => const SupaCSVModifier(null);

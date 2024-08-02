@@ -3,6 +3,7 @@ import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 export 'builder_extension.dart';
+export 'count_response.dart';
 export 'mixin.dart';
 export 'modifier_extensions.dart';
 export 'modifiers/_modifiers.dart';
@@ -24,26 +25,28 @@ export 'modifiers/_modifiers.dart';
 ///
 /// `T` is the type of the response after the modifier is applied.
 ///
-/// `O` is the type of the PostgrestTransformBuilder after the modifier is
-/// applied.
+/// `O` is the type of the PostgrestBuilder after the modifier is applied.
 ///
-/// `I` is the type of the PostgrestTransformBuilder before the modifier is
+/// `I` is the type of the PostgrestBuilder before the modifier is
 /// applied.
 ///
 /// {@endtemplate}
-class SupaModifier<B extends SupaCore, R extends SupaRecord<B>, T, O, I> {
+class SupaModifier<
+    B extends SupaCore,
+    R extends SupaRecord<B>,
+    T,
+    O extends PostgrestBuilder<dynamic, dynamic, dynamic>,
+    I extends PostgrestBuilder<dynamic, dynamic, dynamic>> {
   /// {@macro SupaModifier}
   @internal
   const SupaModifier(this.previousModifier);
 
   /// The modifier that was applied before this one.
-  final SupaModifier<B, R, dynamic, I, dynamic>? previousModifier;
+  final SupaModifier<B, R, dynamic, I,
+      PostgrestBuilder<dynamic, dynamic, dynamic>>? previousModifier;
 
   /// Cascades the Supabase modifier onto the provided [builder].
   @mustBeOverridden
   @internal
-  PostgrestTransformBuilder<O> build(
-    PostgrestTransformBuilder<I> builder,
-  ) =>
-      builder as PostgrestTransformBuilder<O>;
+  O build(I builder) => builder as O;
 }
