@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.1-dev.8
+✨ Add `stream` query
+🐛 Fix filter `fetch` not optional
+
 ## 0.0.1-dev.7
 ✨ Add `count` modifier
 

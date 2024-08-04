@@ -1,6 +1,8 @@
 import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/src/filter/filter.dart';
 import 'package:typesafe_supabase/src/modifier/modifier.dart';
+import 'package:typesafe_supabase/src/stream_filter/builder_extension.dart';
+import 'package:typesafe_supabase/src/stream_modifier/modifier.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@template SupaTable}
@@ -9,7 +11,11 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 ///
 /// {@endtemplate}
 class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
-    with SupaFilterMixin<B>, SupaModifierMixin<B, R> {
+    with
+        SupaFilterMixin<B>,
+        SupaModifierMixin<B, R>,
+        SupaStreamFilterMixin<B>,
+        SupaStreamModifierMixin<B, R> {
   /// {@macro SupaTable}
   const SupaTable(
     this.recordFromJSON, {
@@ -43,18 +49,25 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   ///
   /// `modifier`: The modifier to apply to the query.
   Future<T> fetch<T>({
-    required SupaFilter<B> filter,
     required SupaModifier<B, R, T, PostgrestBuilder<dynamic, dynamic, dynamic>,
             PostgrestBuilder<dynamic, dynamic, dynamic>>
         modifier,
+    SupaFilter<B>? filter,
     Set<SupaColumnBase<B>>? columns,
   }) async {
-    final response = await supabaseClient
+    final request = supabaseClient
         .schema(schema)
         .from(tableName)
-        .select(_generateColumnsPattern(columns))
-        .supaApplyFilter(filter)
-        .supaApplyModifier(modifier);
+        .select(_generateColumnsPattern(columns));
+
+    dynamic response;
+
+    if (filter != null) {
+      response =
+          await request.supaApplyFilter(filter).supaApplyModifier(modifier);
+    } else {
+      response = await request.supaApplyModifier(modifier);
+    }
 
     return _castResponse(modifier, response);
   }
@@ -191,6 +204,42 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
     }
 
     return (await request) as T;
+  }
+
+  /// Streams records from the Supabase table.
+  ///
+  /// `filter`: The filter to apply to the query.
+  ///
+  /// `modifier`: The modifier to apply to the query.
+  Stream<List<R>> stream({
+    SupaStreamFilter<B>? filter,
+    SupaStreamModifier<B, R>? modifier,
+  }) {
+    final request = supabaseClient
+        .schema(schema)
+        .from(tableName)
+        .stream(primaryKey: [primaryKey]);
+
+    if (filter != null) {
+      if (modifier != null) {
+        return request
+            .supaApplyFilter(filter)
+            .supaApplyModifier(modifier)
+            .map((list) => list.map(recordFromJSON).toList());
+      } else {
+        return request.supaApplyFilter(filter).map((list) {
+          return list.map(recordFromJSON).toList();
+        });
+      }
+    }
+
+    if (modifier != null) {
+      return request
+          .supaApplyModifier(modifier)
+          .map((list) => list.map(recordFromJSON).toList());
+    }
+
+    return request.map((list) => list.map(recordFromJSON).toList());
   }
 
   String _generateColumnsPattern(Set<SupaColumnBase<B>>? columns) =>
