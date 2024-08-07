@@ -83,9 +83,9 @@ class ${prefix}Record extends SupaRecord<${prefix}Core> {
 /// {@endtemplate}
 class ${prefix}Insert extends SupaInsert<${prefix}Core> {
   /// {@macro ${prefix}Insert}
-  const ${prefix}Insert({
+  const ${prefix}Insert(${columns.isNotEmpty ? '{' : ''}
     ${columns.map((c) => '${!c.isNullableOrHasDefault ? 'required' : ''} this.${c.name},').join('\n    ')}
-  });
+  ${columns.isNotEmpty ? '}' : ''});
 
   ${columns.map((c) => '  ${c.documentationComment.replaceAll('\n', '\n  ')}\n  final ${c.type}${c.hasDefault ? '?' : ''} ${c.name};').join('\n  ')}
 
