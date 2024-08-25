@@ -31,7 +31,12 @@ class Books extends SupaTable<BooksCore, BooksRecord> {
   static const pages = SupaColumn<BooksCore, int?, int?>(name: 'pages');
 
   /// References the `authors` table joined by the `author_id` column.
-  @SupaTableJoinHere('Authors', 'authors', SupaJoinType.oneToOne)
+  @SupaTableJoinHere(
+    'Authors',
+    'authors',
+    SupaJoinType.oneToOne,
+    isNullable: false,
+  )
   static final author = SupaTableJoin<BooksCore, AuthorsCore>(
     tableName: 'authors',
     joiningColumn: Books.authorID,

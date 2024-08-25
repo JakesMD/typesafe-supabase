@@ -19,15 +19,16 @@ class SupaRecord<B extends SupaCore> {
     SupaTableJoin<B, A> reference,
   ) {
     if (_json[reference.tableName] is Map<String, dynamic>) {
-      return [referenceSingle(reference)];
+      return [referenceSingle(reference)!];
     }
 
-    if (!_json.containsKey(reference.tableName) ||
-        _json[reference.tableName] == null) {
+    if (!_json.containsKey(reference.tableName)) {
       throw Exception(
-        'Column ${reference.tableName} not found in JSON or null.',
+        'Column ${reference.tableName} not found in JSON.',
       );
     }
+
+    if (_json[reference.tableName] == null) return [];
 
     return (_json[reference.tableName] as List<Map<String, dynamic>>)
         .map((e) => reference.record(e) as R)
@@ -35,15 +36,15 @@ class SupaRecord<B extends SupaCore> {
   }
 
   /// Fetches a single record from the given reference.
-  R referenceSingle<A extends SupaCore, R extends SupaRecord<A>>(
+  R? referenceSingle<A extends SupaCore, R extends SupaRecord<A>>(
     SupaTableJoin<B, A> reference,
   ) {
-    if (!_json.containsKey(reference.tableName) ||
-        _json[reference.tableName] == null) {
+    if (!_json.containsKey(reference.tableName)) {
       throw Exception(
-        'Column ${reference.tableName} not found in JSON or null.',
+        'Column ${reference.tableName} not found in JSON.',
       );
     }
+    if (_json[reference.tableName] == null) return null;
 
     return reference.record(_json[reference.tableName] as Map<String, dynamic>)
         as R;

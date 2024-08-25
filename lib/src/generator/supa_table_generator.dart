@@ -26,6 +26,7 @@ class _TableJoin {
     required this.prefix,
     required this.documentationComment,
     required this.joinType,
+    required this.isNullable,
   });
 
   final String name;
@@ -33,6 +34,7 @@ class _TableJoin {
   final String prefix;
   final String documentationComment;
   final SupaJoinType joinType;
+  final bool isNullable;
 }
 
 /// The generator that generates all the necessary classes for a [SupaTable].
@@ -73,7 +75,7 @@ class ${prefix}Record extends SupaRecord<${prefix}Core> {
 
   ${tableJoins.where((j) => j.joinType != SupaJoinType.oneToOne).map((j) => '  ${j.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if no joined columns were fetched.\n  List<${j.prefix}Record> get ${j.name} => reference(${element.displayName}.${j.name});').join('\n  ')}
 
-  ${tableJoins.where((j) => j.joinType == SupaJoinType.oneToOne).map((j) => '  ${j.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if no joined columns were fetched.\n  ${j.prefix}Record get ${j.name} => referenceSingle(${element.displayName}.${j.name});').join('\n  ')}
+  ${tableJoins.where((j) => j.joinType == SupaJoinType.oneToOne).map((j) => '  ${j.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if no joined columns were fetched.\n  ${j.prefix}Record${j.isNullable ? '?' : ''} get ${j.name} => referenceSingle(${element.displayName}.${j.name})${!j.isNullable ? '!' : ''};').join('\n  ')}
 }
 
 /// {@template ${prefix}Insert}
@@ -193,6 +195,8 @@ class ${prefix}Insert extends SupaInsert<${prefix}Core> {
         joinType = SupaJoinType.manyToMany;
     }
 
+    final isNullable = annoValue.getField('isNullable')!.toBoolValue()!;
+
     return _TableJoin(
       name: field.displayName,
       tableName: tableName,
@@ -200,6 +204,7 @@ class ${prefix}Insert extends SupaInsert<${prefix}Core> {
       documentationComment:
           field.documentationComment ?? '/// No documentation found.',
       joinType: joinType,
+      isNullable: isNullable,
     );
   }
 }

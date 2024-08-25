@@ -1,4 +1,8 @@
 # Changelog
+
+## 0.0.1-dev.10
+- ✨ Add option for nullable one-to-one table join fields
+
 ## 0.0.1-dev.9
 - 🐛 Fix generator fails when table contains no columns
 

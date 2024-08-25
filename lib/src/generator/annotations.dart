@@ -49,7 +49,12 @@ class SupaColumnHere<T> {
 /// {@endtemplate}
 class SupaTableJoinHere<A extends SupaTable<dynamic, dynamic>> {
   /// {@macro SupaTableJoinHere}
-  const SupaTableJoinHere(this.prefix, this.tableName, this.joinType);
+  const SupaTableJoinHere(
+    this.prefix,
+    this.tableName,
+    this.joinType, {
+    this.isNullable = true,
+  });
 
   /// The class prefix for the table to join.
   final String prefix;
@@ -59,4 +64,10 @@ class SupaTableJoinHere<A extends SupaTable<dynamic, dynamic>> {
 
   /// The type of join to perform.
   final SupaJoinType joinType;
+
+  /// Whether the record of the join can be null. This is only relevant for
+  /// one-to-one joins.
+  ///
+  /// Default is `true`.
+  final bool isNullable;
 }

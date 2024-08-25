@@ -47,7 +47,7 @@ class BooksRecord extends SupaRecord<BooksCore> {
   /// References the `authors` table joined by the `author_id` column.
   ///
   /// This will throw an exception if no joined columns were fetched.
-  AuthorsRecord get author => referenceSingle(Books.author);
+  AuthorsRecord get author => referenceSingle(Books.author)!;
 }
 
 /// {@template BooksInsert}
