@@ -1,3 +1,4 @@
+import 'package:typesafe_supabase/src/core/exception.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@template SupaRecord}
@@ -23,15 +24,13 @@ class SupaRecord<B extends SupaCore> {
     }
 
     if (!_json.containsKey(reference.tableName)) {
-      throw Exception(
-        'Column ${reference.tableName} not found in JSON.',
-      );
+      throw SupaException.missingColumn(reference.tableName);
     }
 
     if (_json[reference.tableName] == null) return [];
 
-    return (_json[reference.tableName] as List<Map<String, dynamic>>)
-        .map((e) => reference.record(e) as R)
+    return (_json[reference.tableName] as List<dynamic>)
+        .map((e) => reference.record(e as Map<String, dynamic>) as R)
         .toList();
   }
 
@@ -40,10 +39,9 @@ class SupaRecord<B extends SupaCore> {
     SupaTableJoin<B, A> reference,
   ) {
     if (!_json.containsKey(reference.tableName)) {
-      throw Exception(
-        'Column ${reference.tableName} not found in JSON.',
-      );
+      throw SupaException.missingColumn(reference.tableName);
     }
+
     if (_json[reference.tableName] == null) return null;
 
     return reference.record(_json[reference.tableName] as Map<String, dynamic>)
