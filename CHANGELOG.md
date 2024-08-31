@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.1-dev.11
+- ✨ Add custom `foreignKey` option for table joins where more than one relationship is found
+- 🐛 Fix `primaryKey` should be a `List<String>` to accommodate composite keys
+
 ## 0.0.1-dev.10
 - ✨ Add option for nullable one-to-one table join fields
 

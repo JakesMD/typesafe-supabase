@@ -1,5 +1,22 @@
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
+String _generateQueryPatternPrefix<B extends SupaCore>(
+  String tableName,
+  SupaColumn<B, dynamic, dynamic> joiningColumn,
+  SupaJoinType joinType,
+  String? foreignKey,
+) {
+  var secondPart = '';
+
+  if (foreignKey != null) {
+    secondPart = '!$foreignKey';
+  } else if (joinType != SupaJoinType.manyToMany) {
+    secondPart = ':${joiningColumn.name}';
+  }
+
+  return '''$tableName$secondPart''';
+}
+
 /// {@template SupaTableJoin}
 ///
 /// Represents a join between two tables in the Supabase database.
@@ -13,9 +30,10 @@ class SupaTableJoin<B extends SupaCore, A extends SupaCore>
     required this.joiningColumn,
     required this.joinType,
     required this.record,
+    this.foreignKey,
   }) : super(
           queryPattern:
-              '''$tableName${joinType != SupaJoinType.manyToMany ? ':${joiningColumn.name}' : ''}(*)''',
+              '''${_generateQueryPatternPrefix(tableName, joiningColumn, joinType, foreignKey)}(*)''',
         );
 
   /// The name of the table to join.
@@ -30,11 +48,49 @@ class SupaTableJoin<B extends SupaCore, A extends SupaCore>
   /// The constructor of the record type from the table to join.
   final SupaRecord<A> Function(Map<String, dynamic> json) record;
 
+  /// The foreign key to use in the join.
+  ///
+  /// This is required when more than one relationship exists.
+  ///
+  /// ### Example
+  ///
+  /// You may encounter an error like this:
+  ///
+  /// ``` shell
+  /// PostgrestException(
+  ///   message: Could not embed because more than one relationship was found
+  ///            for 'author' and 'id',
+  ///   code: PGRST201,
+  ///   details: [
+  ///     {
+  ///       cardinality: one-to-many,
+  ///       embedding: authors with books,
+  ///       relationship: book_author_id_fkey using authors(id) and
+  ///                     books(author_id)
+  ///     },
+  ///     {
+  ///       cardinality: one-to-many,
+  ///       embedding: authors with author_avatar_urls,
+  ///       relationship: author_avatar_urls_author_id_fkey using
+  ///                     authors(id) and author_avatar_urls(author_id)
+  ///     }
+  ///   ],
+  ///   hint: Try changing 'id' to one of the following:
+  ///         'books!books_author_id_fkey',
+  ///         'author_avatar_urls!author_avatar_urls_author_id_fkey'.
+  ///         Find the desired relationship in the 'details' key.
+  /// )
+  /// ```
+  ///
+  /// In this case, you would set `foreignKey` to
+  /// `'books_author_id_fkey'`.
+  final String? foreignKey;
+
   /// Returns a [SupaColumnBase] with the correct query pattern to fetch the
   /// given columns from the joined table.
   SupaColumnBase<B> call(Set<SupaColumnBase<A>> columns) => SupaColumnBase<B>(
         queryPattern: columns.isNotEmpty
-            ? '''$tableName${joinType != SupaJoinType.manyToMany ? ':${joiningColumn.name}' : ''}(${columns.map((c) => c.queryPattern).join(', ')})'''
+            ? '''${_generateQueryPatternPrefix(tableName, joiningColumn, joinType, foreignKey)}(${columns.map((c) => c.queryPattern).join(', ')})'''
             : queryPattern,
       );
 }
