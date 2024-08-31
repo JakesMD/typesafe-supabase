@@ -1,4 +1,5 @@
 import 'package:typesafe_supabase/src/core/core.dart';
+import 'package:typesafe_supabase/src/core/exception.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@template SupaColumn}
@@ -46,11 +47,11 @@ class SupaColumn<B extends SupaCore, T, J> extends SupaColumnBase<B> {
   ///
   /// Throws an exception if the column is not found in the JSON.
   T fromJSON(Map<String, dynamic> json) {
-    if (!json.containsKey(name)) {
-      throw Exception('Column $name not found in JSON.');
-    }
+    if (!json.containsKey(name)) throw SupaException.missingColumn(name);
+
     if (valueFromJSON != null) return valueFromJSON!(json[name] as J);
     if (T == BigInt) return BigInt.from(json[name] as int) as T;
+    if (T == DateTime) return DateTime.parse(json[name] as String) as T;
     return json[name] as T;
   }
 }

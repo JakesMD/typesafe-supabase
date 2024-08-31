@@ -40,6 +40,7 @@ class SupaValue<B extends SupaCore, T, J> {
   J toJSONValue() {
     if (valueToJSON != null) return valueToJSON!(value);
     if (value is BigInt) return (value as BigInt).toInt() as J;
+    if (value is DateTime) return (value as DateTime).toIso8601String() as J;
     return value as J;
   }
 
