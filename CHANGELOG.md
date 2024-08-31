@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.1-dev.12
+- ✨ Add default JSON converter for DateTime
+- ✨ Add `SupaException`
+- 🐛 Fix type error in `SupaRecord`
+
 ## 0.0.1-dev.11
 - ✨ Add custom `foreignKey` option for table joins where more than one relationship is found
 - 🐛 Fix `primaryKey` should be a `List<String>` to accommodate composite keys

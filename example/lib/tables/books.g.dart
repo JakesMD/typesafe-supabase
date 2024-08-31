@@ -47,6 +47,8 @@ class BooksRecord extends SupaRecord<BooksCore> {
   /// References the `authors` table joined by the `author_id` column.
   ///
   /// This will throw an exception if no joined columns were fetched.
+  ///
+  /// A TypeError here is often caused by a misspelling of the prefix in the @SupaTableJoinHere annotation.
   AuthorsRecord get author => referenceSingle(Books.author)!;
 }
 

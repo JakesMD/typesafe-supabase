@@ -73,9 +73,9 @@ class ${prefix}Record extends SupaRecord<${prefix}Core> {
 
   ${columns.map((c) => '  ${c.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if the column was not fetched.\n  ${c.type} get ${c.name} => call(${element.displayName}.${c.name});').join('\n  ')}
 
-  ${tableJoins.where((j) => j.joinType != SupaJoinType.oneToOne).map((j) => '  ${j.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if no joined columns were fetched.\n  List<${j.prefix}Record> get ${j.name} => reference(${element.displayName}.${j.name});').join('\n  ')}
+  ${tableJoins.where((j) => j.joinType != SupaJoinType.oneToOne).map((j) => '  ${j.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if no joined columns were fetched.\n  ///\n  /// An InvalidType error here is often caused by a misspelling of the prefix in the @SupaTableJoinHere annotation.\n  List<${j.prefix}Record> get ${j.name} => reference(${element.displayName}.${j.name});').join('\n  ')}
 
-  ${tableJoins.where((j) => j.joinType == SupaJoinType.oneToOne).map((j) => '  ${j.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if no joined columns were fetched.\n  ${j.prefix}Record${j.isNullable ? '?' : ''} get ${j.name} => referenceSingle(${element.displayName}.${j.name})${!j.isNullable ? '!' : ''};').join('\n  ')}
+  ${tableJoins.where((j) => j.joinType == SupaJoinType.oneToOne).map((j) => '  ${j.documentationComment.replaceAll('\n', '\n  ')}\n  ///\n  /// This will throw an exception if no joined columns were fetched.\n  ///\n  /// An InvalidType error here is often caused by a misspelling of the prefix in the @SupaTableJoinHere annotation.\n  ${j.prefix}Record${j.isNullable ? '?' : ''} get ${j.name} => referenceSingle(${element.displayName}.${j.name})${!j.isNullable ? '!' : ''};').join('\n  ')}
 }
 
 /// {@template ${prefix}Insert}
