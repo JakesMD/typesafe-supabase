@@ -22,7 +22,7 @@ part 'authors.g.dart';
 @SupaTableHere()
 class Authors extends SupaTable<AuthorsCore, AuthorsRecord> {
   const Authors({required super.supabaseClient})
-      : super(AuthorsRecord.new, tableName: 'authors', primaryKey: 'id');
+      : super(AuthorsRecord.new, tableName: 'authors', primaryKey: const ['id']);
 
   /// The unique identifier of the author.
   @SupaColumnHere<BigInt>(hasDefault: true)
@@ -44,7 +44,7 @@ part 'books.g.dart';
 @SupaTableHere()
 class Books extends SupaTable<BooksCore, BooksRecord> {
   const Books({required super.supabaseClient})
-      : super(BooksRecord.new, tableName: 'books', primaryKey: 'id');
+      : super(BooksRecord.new, tableName: 'books', primaryKey: const ['id']);
 
   /// The unique identifier of the book.
   @SupaColumnHere<BigInt>(hasDefault: true)

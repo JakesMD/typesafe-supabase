@@ -29,7 +29,9 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   final String tableName;
 
   /// The primary key of the table.
-  final String primaryKey;
+  ///
+  /// This can be a single column or a composite key.
+  final List<String> primaryKey;
 
   /// The schema of the table. Defaults to `public`.
   final String schema;
@@ -218,7 +220,7 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
     final request = supabaseClient
         .schema(schema)
         .from(tableName)
-        .stream(primaryKey: [primaryKey]);
+        .stream(primaryKey: primaryKey);
 
     if (filter != null) {
       if (modifier != null) {

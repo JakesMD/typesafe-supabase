@@ -11,7 +11,11 @@ part 'authors.g.dart';
 class Authors extends SupaTable<AuthorsCore, AuthorsRecord> {
   /// {@macro Authors}
   const Authors({required super.supabaseClient})
-      : super(AuthorsRecord.new, tableName: 'authors', primaryKey: 'id');
+      : super(
+          AuthorsRecord.new,
+          tableName: 'authors',
+          primaryKey: const ['id'],
+        );
 
   /// The unique identifier of the author.
   @SupaColumnHere<BigInt>(hasDefault: true)

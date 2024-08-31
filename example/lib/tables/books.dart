@@ -12,7 +12,7 @@ part 'books.g.dart';
 class Books extends SupaTable<BooksCore, BooksRecord> {
   /// {@macro Books}
   const Books({required super.supabaseClient})
-      : super(BooksRecord.new, tableName: 'books', primaryKey: 'id');
+      : super(BooksRecord.new, tableName: 'books', primaryKey: const ['id']);
 
   /// The unique identifier of the book.
   @SupaColumnHere<BigInt>(hasDefault: true)
