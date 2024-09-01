@@ -19,7 +19,7 @@ class SupaRecord<B extends SupaCore> {
   List<R> reference<A extends SupaCore, R extends SupaRecord<A>>(
     SupaTableJoin<B, A> reference,
   ) {
-    if (_json[reference.tableName] is Map) {
+    if (_json[reference.tableName] is Map<String, dynamic>) {
       return [referenceSingle(reference)!];
     }
 
@@ -30,7 +30,7 @@ class SupaRecord<B extends SupaCore> {
     if (_json[reference.tableName] == null) return [];
 
     return (_json[reference.tableName] as List<dynamic>)
-        .map((e) => reference.record(Map<String, dynamic>.from(e as Map)) as R)
+        .map((e) => reference.record(e as Map<String, dynamic>) as R)
         .toList();
   }
 
@@ -44,8 +44,7 @@ class SupaRecord<B extends SupaCore> {
 
     if (_json[reference.tableName] == null) return null;
 
-    return reference.record(
-      Map<String, dynamic>.from(_json[reference.tableName] as Map),
-    ) as R;
+    return reference.record(_json[reference.tableName] as Map<String, dynamic>)
+        as R;
   }
 }

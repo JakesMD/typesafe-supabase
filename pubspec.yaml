@@ -1,6 +1,6 @@
 name: typesafe_supabase
 description: A dart package that enables type-safe queries to a Supabase database.
-version: 0.0.1-dev.13
+version: 0.0.1-dev.12
 repository: https://github.com/JakesMD/typesafe-supabase
 
 environment:
