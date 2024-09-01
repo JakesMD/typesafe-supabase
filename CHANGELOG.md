@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.13
+- 🐛 Fix type error in `SupaRecord`
+
 ## 0.0.1-dev.12
 - ✨ Add default JSON converter for DateTime
 - ✨ Add `SupaException`
