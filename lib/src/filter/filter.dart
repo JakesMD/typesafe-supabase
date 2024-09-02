@@ -100,7 +100,7 @@ class SupaFilter<B extends SupaCore> implements SupaFilterMixin<B> {
 
   @override
   SupaFilter<B> includedIn<J>(
-    SupaColumn<B, dynamic, List<J>?> column,
+    SupaColumn<B, dynamic, J?> column,
     List<J> values,
   ) =>
       SupaIncludedInFilter(column, values, this);

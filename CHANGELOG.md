@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.15
+- 🐛 Fix `includedIn` filter requiring wrong column type
+
 ## 0.0.1-dev.14
 - 🐛 Make filters optional for `upsert`
 - 📝 Update documentation for filters

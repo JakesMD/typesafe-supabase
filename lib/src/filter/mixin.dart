@@ -73,7 +73,7 @@ mixin SupaFilterMixin<B extends SupaCore> {
 
   /// {@macro SupaIncludedInFilter}
   SupaFilter<B> includedIn<J>(
-    SupaColumn<B, dynamic, List<J>?> column,
+    SupaColumn<B, dynamic, J?> column,
     List<J> values,
   ) =>
       SupaIncludedInFilter(column, values, null);
