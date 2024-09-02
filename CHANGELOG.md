@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.1-dev.14
+- 🐛 Make filters optional for `upsert`
+- 📝 Update documentation for filters
+
+## 0.0.1-dev.13 - retracted
+
 ## 0.0.1-dev.12
 - ✨ Add default JSON converter for DateTime
 - ✨ Add `SupaException`

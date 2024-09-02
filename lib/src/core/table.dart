@@ -108,7 +108,8 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   ///
   /// `values`: The set of values to update.
   ///
-  /// `filter`: The filter to apply to the query.
+  /// `filter`: The filter to apply to the query. This targets the records to
+  /// update.
   ///
   /// `columns`: The set of columns to fetch. If null, all columns are
   /// fetched.
@@ -147,7 +148,8 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   ///
   /// `records`: The list of records to update or insert.
   ///
-  /// `filter`: The filter to apply to the query.
+  /// `filter`: The filter to apply to the query. This targets the records
+  /// fetched after the upsert.
   ///
   /// `columns`: The set of columns to fetch. If null, all columns are
   /// fetched.
@@ -155,17 +157,18 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
   /// `modifier`: The modifier to apply to the query.
   Future<T> upsert<T>({
     required List<SupaInsert<B>> records,
-    required SupaFilter<B> filter,
     required SupaModifier<B, R, T, PostgrestBuilder<dynamic, dynamic, dynamic>,
             PostgrestBuilder<dynamic, dynamic, dynamic>>
         modifier,
+    SupaFilter<B>? filter,
     Set<SupaColumnBase<B>>? columns,
   }) async {
-    final request = supabaseClient
+    var request = supabaseClient
         .schema(schema)
         .from(tableName)
-        .upsert(records.map((r) => r.toJSON()).toList())
-        .supaApplyFilter(filter);
+        .upsert(records.map((r) => r.toJSON()).toList());
+
+    if (filter != null) request = request.supaApplyFilter(filter);
 
     if (modifier is! SupaNoneModifier<B, R>) {
       final response = await request
@@ -179,7 +182,8 @@ class SupaTable<B extends SupaCore, R extends SupaRecord<B>>
 
   /// Deletes records from the Supabase table.
   ///
-  /// `filter`: The filter to apply to the query.
+  /// `filter`: The filter to apply to the query. This targets the records to
+  /// delete.
   ///
   /// `columns`: The set of columns to fetch. If null, all columns are
   /// fetched.
