@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.17
+- 🐛 Fix type error
+
 ## 0.0.1-dev.16
 - ✨ Add default JSON converters for `BigInt?` and `DateTime?`
 - 🐛 Fix `greater`, `greaterOrEqual`, `less` and `lessOrEqual` should require `dynamic` column

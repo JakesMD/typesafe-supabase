@@ -2,6 +2,8 @@ import 'package:typesafe_supabase/src/core/core.dart';
 import 'package:typesafe_supabase/src/core/exception.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
+typedef _Nullable<T> = T?;
+
 /// {@template SupaColumn}
 ///
 /// Represents a column in a Supabase table.
@@ -50,14 +52,14 @@ class SupaColumn<B extends SupaCore, T, J> extends SupaColumnBase<B> {
     if (!json.containsKey(name)) throw SupaException.missingColumn(name);
 
     if (valueFromJSON != null) return valueFromJSON!(json[name] as J);
-    if (T is BigInt || T is BigInt?) {
+    if (T == BigInt || T == _Nullable<BigInt>) {
       return _fromSpecificType(
         json[name],
         (value) => BigInt.from(value as int),
       );
     }
 
-    if (T is DateTime || T is DateTime?) {
+    if (T == DateTime || T == _Nullable<DateTime>) {
       return _fromSpecificType(
         json[name],
         (value) => DateTime.parse(value as String),

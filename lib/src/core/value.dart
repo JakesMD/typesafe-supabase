@@ -1,5 +1,7 @@
 import 'package:typesafe_supabase/src/core/core.dart';
 
+typedef _Nullable<T> = T?;
+
 /// {@template SupaValue}
 ///
 /// Represents a value that is stored within a record from a Supabase table.
@@ -39,10 +41,10 @@ class SupaValue<B extends SupaCore, T, J> {
   /// Returns the converted value ready for JSON.
   J toJSONValue() {
     if (valueToJSON != null) return valueToJSON!(value);
-    if (value is BigInt || value is BigInt?) {
+    if (value == BigInt || value == _Nullable<BigInt>) {
       return _toSpecificType<BigInt>(value, (value) => value.toInt());
     }
-    if (value is DateTime || value is DateTime?) {
+    if (value == DateTime || value == _Nullable<DateTime>) {
       return _toSpecificType<DateTime>(
         value,
         (value) => value.toIso8601String(),
