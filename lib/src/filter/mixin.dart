@@ -64,11 +64,11 @@ mixin SupaFilterMixin<B extends SupaCore> {
       SupaFilterFilter(column, operator, value, null);
 
   /// {@macro SupaGreaterFilter}
-  SupaFilter<B> greater(SupaValue<B, dynamic, num?> value) =>
+  SupaFilter<B> greater(SupaValue<B, dynamic, Object?> value) =>
       SupaGreaterFilter(value, null);
 
   /// {@macro SupaGreaterOrEqualFilter}
-  SupaFilter<B> greaterOrEqual(SupaValue<B, dynamic, num?> value) =>
+  SupaFilter<B> greaterOrEqual(SupaValue<B, dynamic, Object?> value) =>
       SupaGreaterOrEqualFilter(value, null);
 
   /// {@macro SupaIncludedInFilter}
@@ -83,11 +83,11 @@ mixin SupaFilterMixin<B extends SupaCore> {
       SupaIsNullFilter(column, null);
 
   /// {@macro SupaLessFilter}
-  SupaFilter<B> less(SupaValue<B, dynamic, num?> value) =>
+  SupaFilter<B> less(SupaValue<B, dynamic, Object?> value) =>
       SupaLessFilter(value, null);
 
   /// {@macro SupaLessOrEqualFilter}
-  SupaFilter<B> lessOrEqual(SupaValue<B, dynamic, num?> value) =>
+  SupaFilter<B> lessOrEqual(SupaValue<B, dynamic, Object?> value) =>
       SupaLessOrEqualFilter(value, null);
 
   /// {@macro SupaLikeFilter}

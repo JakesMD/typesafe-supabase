@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.1-dev.16
+- ✨ Add default JSON converters for `BigInt?` and `DateTime?`
+- 🐛 Fix `greater`, `greaterOrEqual`, `less` and `lessOrEqual` should require `dynamic` column
+
 ## 0.0.1-dev.15
 - 🐛 Fix `includedIn` filter requiring wrong column type
 
@@ -10,7 +14,7 @@
 ## 0.0.1-dev.13 - retracted
 
 ## 0.0.1-dev.12
-- ✨ Add default JSON converter for DateTime
+- ✨ Add default JSON converter for `DateTime`
 - ✨ Add `SupaException`
 - 🐛 Fix type error in `SupaRecord`
 

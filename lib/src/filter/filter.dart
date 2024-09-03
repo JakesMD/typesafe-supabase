@@ -91,11 +91,11 @@ class SupaFilter<B extends SupaCore> implements SupaFilterMixin<B> {
       SupaFilterFilter(column, operator, value, this);
 
   @override
-  SupaFilter<B> greater(SupaValue<B, dynamic, num?> value) =>
+  SupaFilter<B> greater(SupaValue<B, dynamic, Object?> value) =>
       SupaGreaterFilter(value, this);
 
   @override
-  SupaFilter<B> greaterOrEqual(SupaValue<B, dynamic, num?> value) =>
+  SupaFilter<B> greaterOrEqual(SupaValue<B, dynamic, Object?> value) =>
       SupaGreaterOrEqualFilter(value, this);
 
   @override
@@ -110,11 +110,11 @@ class SupaFilter<B extends SupaCore> implements SupaFilterMixin<B> {
       SupaIsNullFilter(column, this);
 
   @override
-  SupaFilter<B> less(SupaValue<B, dynamic, num?> value) =>
+  SupaFilter<B> less(SupaValue<B, dynamic, Object?> value) =>
       SupaLessFilter(value, this);
 
   @override
-  SupaFilter<B> lessOrEqual(SupaValue<B, dynamic, num?> value) =>
+  SupaFilter<B> lessOrEqual(SupaValue<B, dynamic, Object?> value) =>
       SupaLessOrEqualFilter(value, this);
 
   @override

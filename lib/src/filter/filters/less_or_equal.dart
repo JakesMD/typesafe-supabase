@@ -18,7 +18,7 @@ class SupaLessOrEqualFilter<B extends SupaCore> extends SupaFilter<B> {
   const SupaLessOrEqualFilter(this.value, super.previousFilter);
 
   /// The value to filter with.
-  final SupaValue<B, dynamic, num?> value;
+  final SupaValue<B, dynamic, Object?> value;
 
   @override
   PostgrestFilterBuilder<P> build<P>(PostgrestFilterBuilder<P> builder) =>
