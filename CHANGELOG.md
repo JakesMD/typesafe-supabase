@@ -1,11 +1,12 @@
 # Changelog
 
-## 0.0.1-dev.17
-- 🐛 Fix type error
-
-## 0.0.1-dev.16
+## 0.0.1-dev.18
 - ✨ Add default JSON converters for `BigInt?` and `DateTime?`
 - 🐛 Fix `greater`, `greaterOrEqual`, `less` and `lessOrEqual` should require `dynamic` column
+
+## 0.0.1-dev.17 - retracted
+
+## 0.0.1-dev.16 - retracted
 
 ## 0.0.1-dev.15
 - 🐛 Fix `includedIn` filter requiring wrong column type
