@@ -48,7 +48,7 @@ class BooksRecord extends SupaRecord<BooksCore> {
   ///
   /// This will throw an exception if no joined columns were fetched.
   ///
-  /// A TypeError here is often caused by a misspelling of the prefix in the @SupaTableJoinHere annotation.
+  /// An InvalidType error here is often caused by a misspelling of the prefix in the @SupaTableJoinHere annotation.
   AuthorsRecord get author => referenceSingle(Books.author)!;
 }
 

@@ -50,8 +50,25 @@ class SupaColumn<B extends SupaCore, T, J> extends SupaColumnBase<B> {
     if (!json.containsKey(name)) throw SupaException.missingColumn(name);
 
     if (valueFromJSON != null) return valueFromJSON!(json[name] as J);
-    if (T == BigInt) return BigInt.from(json[name] as int) as T;
-    if (T == DateTime) return DateTime.parse(json[name] as String) as T;
+    if (T is BigInt || T is BigInt?) {
+      return _fromSpecificType(
+        json[name],
+        (value) => BigInt.from(value as int),
+      );
+    }
+
+    if (T is DateTime || T is DateTime?) {
+      return _fromSpecificType(
+        json[name],
+        (value) => DateTime.parse(value as String),
+      );
+    }
+
     return json[name] as T;
+  }
+
+  T _fromSpecificType<M>(dynamic value, M Function(dynamic) parser) {
+    if (T is M) return parser(value) as T;
+    return value != null ? parser(value) as T : null as T;
   }
 }

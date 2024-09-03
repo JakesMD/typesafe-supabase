@@ -39,9 +39,21 @@ class SupaValue<B extends SupaCore, T, J> {
   /// Returns the converted value ready for JSON.
   J toJSONValue() {
     if (valueToJSON != null) return valueToJSON!(value);
-    if (value is BigInt) return (value as BigInt).toInt() as J;
-    if (value is DateTime) return (value as DateTime).toIso8601String() as J;
+    if (value is BigInt || value is BigInt?) {
+      return _toSpecificType<BigInt>(value, (value) => value.toInt());
+    }
+    if (value is DateTime || value is DateTime?) {
+      return _toSpecificType<DateTime>(
+        value,
+        (value) => value.toIso8601String(),
+      );
+    }
     return value as J;
+  }
+
+  J _toSpecificType<M>(dynamic value, dynamic Function(M) parser) {
+    if (value is M) return parser(value) as J;
+    return value != null ? parser(value as M) as J : null as J;
   }
 
   /// Converts the value to a JSON object.
