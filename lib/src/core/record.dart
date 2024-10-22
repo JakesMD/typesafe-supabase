@@ -1,4 +1,3 @@
-import 'package:typesafe_supabase/src/core/exception.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@template SupaRecord}

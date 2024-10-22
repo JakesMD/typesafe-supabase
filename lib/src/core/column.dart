@@ -1,5 +1,4 @@
 import 'package:typesafe_supabase/src/core/core.dart';
-import 'package:typesafe_supabase/src/core/exception.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 typedef _Nullable<T> = T?;

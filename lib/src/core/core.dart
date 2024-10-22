@@ -1,5 +1,6 @@
 export 'column.dart';
 export 'column_base.dart';
+export 'exception.dart';
 export 'insert.dart';
 export 'join_type.dart';
 export 'record.dart';

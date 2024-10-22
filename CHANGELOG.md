@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.19
+- 🐛 Fix `SupaException` not exported
+
 ## 0.0.1-dev.18
 - ✨ Add default JSON converters for `BigInt?` and `DateTime?`
 - 🐛 Fix `greater`, `greaterOrEqual`, `less` and `lessOrEqual` should require `dynamic` column
