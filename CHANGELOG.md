@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.1-dev.20 - 10.03.25
+- ✨ Add filter by joined table column
+
 ## 0.0.1-dev.19
 - 🐛 Fix `SupaException` not exported
 

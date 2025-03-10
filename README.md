@@ -129,5 +129,4 @@ await books.delete(
 ## 📋 TODO
 - [ ] Query JSON data (`.select('address->city')`)
 - [ ] Filter by JSON key (`.eq('address->postcode', 90210)`)
-- [ ] Filter by joined table column (`.eq('countries.name', 'Indonesia')`)
 - [ ] In-depth documentation

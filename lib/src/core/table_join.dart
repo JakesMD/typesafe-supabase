@@ -93,4 +93,13 @@ class SupaTableJoin<B extends SupaCore, A extends SupaCore>
             ? '''${_generateQueryPatternPrefix(tableName, joiningColumn, joinType, foreignKey)}(${columns.map((c) => c.queryPattern).join(', ')})'''
             : queryPattern,
       );
+
+  /// Creates a [SupaValue] with the correct name for fetching the given value
+  /// from the joined table.
+  SupaValue<B, T, J> value<T, J>(SupaValue<A, T, J> value) => SupaValue(
+        name: '$tableName.${value.name}',
+        value: value.value,
+        valueToJSON: value.valueToJSON,
+        valueFromJSON: value.valueFromJSON,
+      );
 }
