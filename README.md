@@ -130,3 +130,27 @@ await books.delete(
 - [ ] Query JSON data (`.select('address->city')`)
 - [ ] Filter by JSON key (`.eq('address->postcode', 90210)`)
 - [ ] In-depth documentation
+
+Sounds good! Let's integrate that.
+
+Here's the refined, concise update for your README:
+
+---
+
+## A Quick Update & Future Vision
+
+I've used `typesafe-supabase` extensively in production, and I'm quite happy with its core concept and how it streamlines development and testing. However, there are clear paths for improvement:
+
+### 1. Broaden Database Compatibility
+Let's make this **Postgres-generic**, not just Supabase. The underlying `postgrest` package means we could support any PostgreSQL database.
+
+### 2. Improve Filter Syntax
+The current `filter: books.equal(Books.id(BigInt.from(4)))` is clunky. A more intuitive approach would be:
+```dart
+filters: [
+  Books.id.equal(BigInt.from(4)),
+]
+```
+
+### 3. Enhance Model Flexibility
+One record per table can be limiting. Instead of just defining tables, we should aim to define **models for the desired response shapes**, offering greater flexibility beyond `SupaRecord`. This concept is akin to the `SupabaseModel` found in the `brick_supabase` package.
