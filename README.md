@@ -6,6 +6,21 @@
 - [x] ⚡️ Minimal setup
 - [x] ⚡️ Minimal code generation
 
+
+## A Quick Update & Future Vision
+
+I've been working on a new and improved version of this package: [`typesafe_postgrest`](https://github.com/JakesMD/typesafe-postgrest):
+- [x] Better API
+- [x] Almost zero boilerplate
+- [x] Even less code generation (you can do it by hand if you want)
+- [x] Custom models (instead of just `SupaRecord`)
+- [x] Generic for any Postgres database, not just Supabase
+
+This package will become an extension of `typesafe_postgrest` that handles the Supabase specifics for you.
+
+You'll find the new `typesafe_supabase` package in the `beta` branch.
+
+
 ## 🎮 Basic Usage
 
 > 🚧 **WIP!** This package is still under development. Use it with caution and [file any potential issues you see](https://github.com/JakesMD/typesafe-supabase/issues).
@@ -130,27 +145,3 @@ await books.delete(
 - [ ] Query JSON data (`.select('address->city')`)
 - [ ] Filter by JSON key (`.eq('address->postcode', 90210)`)
 - [ ] In-depth documentation
-
-Sounds good! Let's integrate that.
-
-Here's the refined, concise update for your README:
-
----
-
-## A Quick Update & Future Vision
-
-I've used `typesafe-supabase` extensively in production, and I'm quite happy with its core concept and how it streamlines development and testing. However, there are clear paths for improvement:
-
-### 1. Broaden Database Compatibility
-Let's make this **Postgres-generic**, not just Supabase. The underlying `postgrest` package means we could support any PostgreSQL database.
-
-### 2. Improve Filter Syntax
-The current `filter: books.equal(Books.id(BigInt.from(4)))` is clunky. A more intuitive approach would be:
-```dart
-filters: [
-  Books.id.equal(BigInt.from(4)),
-]
-```
-
-### 3. Enhance Model Flexibility
-One record per table can be limiting. Instead of just defining tables, we should aim to define **models for the desired response shapes**, offering greater flexibility beyond `SupaRecord`. This concept is akin to the `SupabaseModel` found in the `brick_supabase` package.
