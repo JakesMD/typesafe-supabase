@@ -18,15 +18,13 @@ import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 /// {@endtemplate}
 class SupabaseTable<TableType> extends PgTable<TableType> {
   /// {@macro SupabaseTable}
-  SupabaseTable({
-    required SupabaseClient client,
-    required String tableName,
+  SupabaseTable(
+    SupabaseClient client, {
+    required super.tableName,
     required this.primaryKey,
     String schema = 'public',
   }) : super(
-          tableName: PgTableName<TableType>(tableName),
-          initialQuery: (tableName) => client.schema(schema).from(tableName),
-        );
+            initialQuery: (tableName) => client.schema(schema).from(tableName));
 
   /// The list of columns that combined act as the primary key for the table.
   /// This is required Supabase's Realtime API.
