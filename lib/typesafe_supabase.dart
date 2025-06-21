@@ -30,3 +30,7 @@ class SupabaseTable<TableType> extends PgTable<TableType> {
   /// This is required Supabase's Realtime API.
   final PgColumnList<TableType> primaryKey;
 }
+
+// Typedefs are self-documenting.
+// ignore: public_member_api_docs
+typedef PgColumnList<TableType> = List<PgColumn<TableType, dynamic, dynamic>>;
