@@ -4,7 +4,6 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 @internal
 extension SupaSupabaseStreamBuilderX on SupabaseStreamBuilder {
-  /// Applies the provided [SupaStreamModifier] to the stream builder.
   SupabaseStreamBuilder applySupaModifier<TableType, CurrentType, PreviousType>(
     SupaStreamModifier<TableType, CurrentType, PreviousType> modifier,
   ) {

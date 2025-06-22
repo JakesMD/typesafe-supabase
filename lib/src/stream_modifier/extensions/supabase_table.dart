@@ -1,6 +1,6 @@
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
-/// Provides modifiers that can start the modifier chain.
+/// Provides stream modifiers that can start the modifier chain.
 extension SupabaseTableModifierX<TableType> on SupabaseTable<TableType> {
   /// {@macro typesafe_postgrest.PgLimitModifier}
   SupaLimitStreamModifier<TableType> limitStream(int count) =>
