@@ -1,6 +1,8 @@
 import 'package:supabase/supabase.dart';
 import 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
+export 'package:typesafe_postgrest/typesafe_postgrest.dart';
+
 /// {@template SupabaseTable}
 ///
 /// A [PgTable] configured to use a [SupabaseClient] with added support for
