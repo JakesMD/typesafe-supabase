@@ -3,7 +3,7 @@ import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/src/stream_modifier/stream_modifier_builder.dart';
 
 export 'extensions/_extensions.dart';
-export 'modifiers/modifiers.dart';
+export 'modifiers/_modifiers.dart';
 export 'stream_modifier_builder.dart';
 
 /// {@template typesafe_supabase.SupaStreamModifier}

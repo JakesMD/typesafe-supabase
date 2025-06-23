@@ -4,9 +4,12 @@ import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 @internal
 extension SupaSupabaseStreamBuilderX on SupabaseStreamBuilder {
-  SupabaseStreamBuilder applySupaModifier<TableType, CurrentType, PreviousType>(
-    SupaStreamModifier<TableType, CurrentType, PreviousType> modifier,
+  SupabaseStreamBuilder
+      applySupaStreamModifier<TableType, CurrentType, PreviousType>(
+    SupaStreamModifier<TableType, CurrentType, PreviousType>? modifier,
   ) {
+    if (modifier == null) return this;
+
     final modifiers = <SupaStreamModifier<TableType, dynamic, dynamic>>[];
 
     SupaStreamModifier<TableType, dynamic, dynamic>? current = modifier;
