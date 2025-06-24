@@ -1,10 +1,8 @@
 import 'package:meta/meta.dart';
 import 'package:supabase/supabase.dart';
-import 'package:typesafe_supabase/src/stream_modifier/stream_modifier_builder.dart';
 
 export 'extensions/_extensions.dart';
 export 'modifiers/_modifiers.dart';
-export 'stream_modifier_builder.dart';
 
 /// {@template typesafe_supabase.SupaStreamModifier}
 ///
@@ -24,6 +22,5 @@ class SupaStreamModifier<TableType, CurrentType, PreviousType> {
   /// Cascades the modifier onto the provided [builder].
   @mustBeOverridden
   @internal
-  SupaStreamModifierBuilder<CurrentType> build(SupabaseStreamBuilder builder) =>
-      SupaStreamModifierBuilder(builder);
+  SupabaseStreamBuilder build(SupabaseStreamBuilder builder) => builder;
 }

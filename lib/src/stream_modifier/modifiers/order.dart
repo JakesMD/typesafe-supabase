@@ -3,7 +3,6 @@
 
 import 'package:meta/meta.dart';
 import 'package:supabase/supabase.dart';
-import 'package:typesafe_supabase/src/stream_modifier/stream_modifier.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@macro typesafe_postgrest.PgOrderModifier}
@@ -22,7 +21,6 @@ class SupaOrderStreamModifier<TableType>
 
   @override
   @internal
-  SupaStreamModifierBuilder<PgJsonList> build(SupabaseStreamBuilder builder) =>
-      SupaStreamModifierBuilder(
-          builder.order(column.name, ascending: ascending));
+  SupabaseStreamBuilder build(SupabaseStreamBuilder builder) =>
+      builder.order(column.name, ascending: ascending);
 }

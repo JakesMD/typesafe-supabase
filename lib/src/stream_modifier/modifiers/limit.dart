@@ -1,6 +1,5 @@
 import 'package:meta/meta.dart';
 import 'package:supabase/supabase.dart';
-import 'package:typesafe_supabase/src/stream_modifier/stream_modifier.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
 /// {@macro typesafe_postgrest.PgLimitModifier}
@@ -15,6 +14,6 @@ class SupaLimitStreamModifier<TableType>
 
   @override
   @internal
-  SupaStreamModifierBuilder<PgJsonList> build(SupabaseStreamBuilder builder) =>
-      SupaStreamModifierBuilder(builder.limit(count));
+  SupabaseStreamBuilder build(SupabaseStreamBuilder builder) =>
+      builder.limit(count);
 }

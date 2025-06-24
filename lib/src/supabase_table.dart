@@ -61,16 +61,12 @@ class SupabaseTable<TableType> extends PgTable<TableType> {
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     SupaStreamModifier<TableType, PgJsonList, dynamic>? modifier,
     SupaStreamFilter<TableType>? filter,
-  }) {
-    final modelModifier =
-        SupaAsModelsStreamModifier(modifier, modelBuilder.constructor);
-
-    return (initialQuery($tableName) as SupabaseQueryBuilder)
-        .stream(primaryKey: primaryKey.map((e) => e.name).toList())
-        .applySupaStreamFilter(filter)
-        .applySupaStreamModifier(modelModifier)
-        .map((data) => data.map(modelModifier.fromJson).toList());
-  }
+  }) =>
+      (initialQuery($tableName) as SupabaseQueryBuilder)
+          .stream(primaryKey: primaryKey.map((e) => e.name).toList())
+          .applySupaStreamFilter(filter)
+          .applySupaStreamModifier(modifier)
+          .map((data) => data.map(modelBuilder.constructor).toList());
 
   /// Streams a single model from the database.
   ///
@@ -83,16 +79,12 @@ class SupabaseTable<TableType> extends PgTable<TableType> {
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     SupaStreamModifier<TableType, PgJsonList, dynamic>? modifier,
     SupaStreamFilter<TableType>? filter,
-  }) {
-    final modelModifier =
-        SupaAsModelStreamModifier(modifier, modelBuilder.constructor);
-
-    return (initialQuery($tableName) as SupabaseQueryBuilder)
-        .stream(primaryKey: primaryKey.map((e) => e.name).toList())
-        .applySupaStreamFilter(filter)
-        .applySupaStreamModifier(modelModifier)
-        .map((data) => modelModifier.fromJson(data.first));
-  }
+  }) =>
+      (initialQuery($tableName) as SupabaseQueryBuilder)
+          .stream(primaryKey: primaryKey.map((e) => e.name).toList())
+          .applySupaStreamFilter(filter)
+          .applySupaStreamModifier(modifier)
+          .map((data) => modelBuilder.constructor(data.first));
 
   /// Streams a nullable model from the database.
   ///
@@ -105,15 +97,11 @@ class SupabaseTable<TableType> extends PgTable<TableType> {
     required PgModelBuilder<TableType, ModelType> modelBuilder,
     SupaStreamModifier<TableType, PgJsonList, dynamic>? modifier,
     SupaStreamFilter<TableType>? filter,
-  }) {
-    final modelModifier =
-        SupaMaybeAsModelStreamModifier(modifier, modelBuilder.constructor);
-
-    return (initialQuery($tableName) as SupabaseQueryBuilder)
-        .stream(primaryKey: primaryKey.map((e) => e.name).toList())
-        .applySupaStreamFilter(filter)
-        .applySupaStreamModifier(modelModifier)
-        .map((data) =>
-            data.isNotEmpty ? modelModifier.fromJson(data.first) : null);
-  }
+  }) =>
+      (initialQuery($tableName) as SupabaseQueryBuilder)
+          .stream(primaryKey: primaryKey.map((e) => e.name).toList())
+          .applySupaStreamFilter(filter)
+          .applySupaStreamModifier(modifier)
+          .map((data) =>
+              data.isNotEmpty ? modelBuilder.constructor(data.first) : null);
 }

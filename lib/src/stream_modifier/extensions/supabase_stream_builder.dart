@@ -20,6 +20,6 @@ extension SupaSupabaseStreamBuilderX on SupabaseStreamBuilder {
     }
 
     return modifiers.fold<SupabaseStreamBuilder>(
-        this, (prev, modifier) => modifier.build(prev).builder);
+        this, (prev, modifier) => modifier.build(prev));
   }
 }
