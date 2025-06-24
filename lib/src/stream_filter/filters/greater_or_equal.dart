@@ -2,17 +2,21 @@ import 'package:meta/meta.dart';
 import 'package:supabase/supabase.dart';
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
-/// {@macro SupaGreaterOrEqualFilter}
-class SupaGreaterOrEqualStreamFilter<B extends SupaCore>
-    extends SupaStreamFilter<B> {
-  /// {@macro SupaGreaterOrEqualFilter}
+/// {@macro typesafe_postgrest.PgGreaterOrEqualFilter}
+class SupaGreaterOrEqualStreamFilter<TableType, T>
+    extends SupaStreamFilter<TableType> {
+  /// {@macro typesafe_postgrest.PgGreaterOrEqualFilter}
   @internal
-  const SupaGreaterOrEqualStreamFilter(this.value);
+  const SupaGreaterOrEqualStreamFilter(
+      this.column, this.value, super.previousFilter);
+
+  /// The column to filter by.
+  final PgFilterColumn<TableType, T, dynamic> column;
 
   /// The value to filter with.
-  final SupaValue<B, dynamic, num?> value;
+  final T value;
 
   @override
   SupabaseStreamBuilder build(SupabaseStreamFilterBuilder builder) =>
-      builder.gte(value.name, value.toJSONValue()!);
+      builder.gte(column.filterPattern, column.toJson(value) as Object);
 }

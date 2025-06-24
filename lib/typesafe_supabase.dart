@@ -1,10 +1,8 @@
-/// The Supabase client library extracted in order to enable mocking and
-/// testing in other packages.
-library csupabase_client;
+export 'package:typesafe_postgrest/typesafe_postgrest.dart';
 
-export 'src/core/core.dart';
-export 'src/filter/filter.dart' hide SupaFilterBuilder;
-export 'src/generator/annotations.dart';
-export 'src/modifier/modifier.dart' hide SupaModifierBuilder;
-export 'src/stream_filter/filter.dart' hide SupaStreamFilterBuilder;
-export 'src/stream_modifier/modifier.dart' hide SupaStreamModifierBuilder;
+export 'src/stream_filter/stream_filter.dart'
+    hide SupaSupabaseStreamFilterBuilderX;
+export 'src/stream_modifier/stream_modifier.dart'
+    hide SupaStreamModifierBuilder, SupaSupabaseStreamBuilderX;
+export 'src/supabase_table.dart';
+export 'src/types.dart';
