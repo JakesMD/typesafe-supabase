@@ -1,8 +1,8 @@
 import 'package:typesafe_supabase/typesafe_supabase.dart';
 
-/// Provides stream filters to all filter column types.
+/// Provides stream filters to all column types.
 extension SupaAllFilterColumnsX<TableType, ValueType, JsonValueType>
-    on PgFilterColumn<TableType, ValueType, JsonValueType> {
+    on PgColumn<TableType, ValueType, JsonValueType> {
   /// {@macro typesafe_supabase.SupaEqualStreamFilter}
   SupaStreamFilter<TableType> streamEquals(ValueType value) =>
       SupaEqualStreamFilter(this, value, null);
