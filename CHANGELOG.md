@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.0.4 - 25.06.25
+- 📦 Update dependencies
+
 ## 0.0.3 - 24.06.25
 - 🔥 Remove `SupaStreamModifierBuilder`
 
