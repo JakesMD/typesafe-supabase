@@ -66,7 +66,9 @@ class SupabaseTable<TableType> extends PgTable<TableType> {
           .stream(primaryKey: primaryKey.map((e) => e.name).toList())
           .applySupaStreamFilter(filter)
           .applySupaStreamModifier(modifier)
-          .map((data) => data.map(modelBuilder.constructor).toList());
+          .map((data) => data
+              .map((json) => modelBuilder.constructor(json, null))
+              .toList());
 
   /// Streams a single model from the database.
   ///
@@ -84,7 +86,7 @@ class SupabaseTable<TableType> extends PgTable<TableType> {
           .stream(primaryKey: primaryKey.map((e) => e.name).toList())
           .applySupaStreamFilter(filter)
           .applySupaStreamModifier(modifier)
-          .map((data) => modelBuilder.constructor(data.first));
+          .map((data) => modelBuilder.constructor(data.first, null));
 
   /// Streams a nullable model from the database.
   ///
@@ -102,6 +104,7 @@ class SupabaseTable<TableType> extends PgTable<TableType> {
           .stream(primaryKey: primaryKey.map((e) => e.name).toList())
           .applySupaStreamFilter(filter)
           .applySupaStreamModifier(modifier)
-          .map((data) =>
-              data.isNotEmpty ? modelBuilder.constructor(data.first) : null);
+          .map((data) => data.isNotEmpty
+              ? modelBuilder.constructor(data.first, null)
+              : null);
 }

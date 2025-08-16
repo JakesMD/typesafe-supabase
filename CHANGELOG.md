@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.1.0 - 16.08.25
+- 📦 Update `typesafe_postgrest` dependency
+
 ## 0.0.4 - 25.06.25
 - 📦 Update dependencies
 

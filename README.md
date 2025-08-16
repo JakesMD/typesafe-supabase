@@ -36,7 +36,7 @@ class AuthorsTable extends SupabaseTable<AuthorsTable> {
 ``` dart
 @PgModelHere()
 class Author extends PgModel<AuthorsTable> {
-  Author(super.json) : super(builder: builder);
+  Author(super.json, super.values) : super(builder: builder);
 
   static final builder = PgModelBuilder<AuthorsTable, Author>(
     constructor: Author.new,
@@ -69,8 +69,11 @@ extension PgAuthorX on Author {
 typedef AuthorsTableInsert = AuthorsTableUpsert;
 
 class AuthorsTableUpsert extends PgUpsert<AuthorsTable> {
-  AuthorsTableUpsert({required String name, BigInt? id})
+  AuthorsTableUpsert({required this.name, this.id})
     : super([AuthorsTable.name(name), if (id != null) AuthorsTable.id(id)]);
+
+  final String name;
+  final BigInt? id;
 }
 ```
 
